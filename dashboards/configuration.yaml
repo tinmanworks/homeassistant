@@ -14,9 +14,57 @@ views:
           - type: heading
             heading: Mode & Essentials
 
-          - type: tile
+          # One-tap Room Mode buttons (no popup)
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Workspace
+                icon: mdi:desk
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: WorkSpace
+
+              - type: button
+                name: Lounge
+                icon: mdi:sofa
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Lounge
+
+              - type: button
+                name: Sleep
+                icon: mdi:sleep
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Sleep
+
+              - type: button
+                name: Away
+                icon: mdi:exit-run
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Away
+
+          # Current mode (readable state)
+          - type: entity
             entity: input_select.room_mode
-            name: Room Mode
+            name: Current Room Mode
             icon: mdi:home-variant
 
           - type: tile
@@ -35,12 +83,12 @@ views:
             icon: mdi:monitor
 
           - type: tile
-            entity: switch.smart_switch_25021405918612510d01c4e7ae1322c3_outlet
+            entity: switch.maindesk_outlet
             name: MainDesk Power
             icon: mdi:power-socket-eu
 
           - type: tile
-            entity: switch.smart_switch_25021451086062510d01c4e7ae1321fa_outlet
+            entity: switch.workstation_outlet
             name: WorkStation Power
             icon: mdi:power-socket-eu
 
@@ -83,7 +131,6 @@ views:
               - sensor.air_purifier_pm2_5
               - sensor.air_purifier_filter_lifetime
 
-
   # =========================
   # WORKSPACE (Power + Metrics)
   # =========================
@@ -100,22 +147,32 @@ views:
             heading: Controls
 
           - type: tile
-            entity: switch.smart_switch_25021405918612510d01c4e7ae1322c3_outlet
+            entity: switch.maindesk_outlet
             name: MainDesk Outlet
             icon: mdi:power-socket-eu
 
           - type: tile
-            entity: switch.smart_switch_25021451086062510d01c4e7ae1321fa_outlet
+            entity: switch.workstation_outlet
             name: WorkStation Outlet
             icon: mdi:power-socket-eu
 
           - type: tile
-            entity: button.smart_switch_25021405918612510d01c4e7ae1322c3_refresh
+            entity: switch.maindesk_config_overtemp_enable
+            name: MainDesk Overtemp
+            icon: mdi:thermometer-alert
+
+          - type: tile
+            entity: switch.workstation_config_overtemp_enable
+            name: WorkStation Overtemp
+            icon: mdi:thermometer-alert
+
+          - type: tile
+            entity: button.maindesk_refresh
             name: Refresh MainDesk
             icon: mdi:refresh
 
           - type: tile
-            entity: button.smart_switch_25021451086062510d01c4e7ae1321fa_refresh
+            entity: button.workstation_refresh
             name: Refresh WorkStation
             icon: mdi:refresh
 
@@ -127,18 +184,20 @@ views:
           - type: entities
             title: MainDesk (Live)
             entities:
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_power
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_current
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_voltage
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_signal_strength
+              - sensor.maindesk_power
+              - sensor.maindesk_current
+              - sensor.maindesk_voltage
+              - sensor.maindesk_signal_strength
+              - sensor.maindesk_config_overtemp_type
 
           - type: entities
             title: WorkStation (Live)
             entities:
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_power
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_current
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_voltage
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_signal_strength
+              - sensor.workstation_power
+              - sensor.workstation_current
+              - sensor.workstation_voltage
+              - sensor.workstation_signal_strength
+              - sensor.workstation_config_overtemp_type
 
       - type: grid
         cards:
@@ -149,14 +208,20 @@ views:
             title: MainDesk Power
             hours_to_show: 24
             entities:
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_power
+              - sensor.maindesk_power
 
           - type: history-graph
             title: WorkStation Power
             hours_to_show: 24
             entities:
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_power
+              - sensor.workstation_power
 
+          - type: history-graph
+            title: Energy (kWh)
+            hours_to_show: 24
+            entities:
+              - sensor.maindesk_energy
+              - sensor.workstation_energy
 
   # =========================
   # LOUNGE (Media + Comfort)
@@ -184,6 +249,11 @@ views:
             name: Monitor Power
             icon: mdi:monitor
 
+          - type: tile
+            entity: button.wake_on_lan_6c_70_cb_f0_15_b0
+            name: Wake PC (WOL)
+            icon: mdi:lan-connect
+
       - type: grid
         cards:
           - type: heading
@@ -204,6 +274,35 @@ views:
             entities:
               - switch.air_purifier_display
               - switch.air_purifier_child_lock
+              - update.air_purifier_firmware
+
+          # Ceiling settings as tiles (no cutoff)
+          - type: heading
+            heading: Ceiling Light Settings
+
+          - type: tile
+            entity: number.ceiling_light_on_level
+            name: On Level
+
+          - type: tile
+            entity: number.ceiling_light_on_transition_time
+            name: On Transition
+
+          - type: tile
+            entity: number.ceiling_light_off_transition_time
+            name: Off Transition
+
+          - type: tile
+            entity: number.ceiling_light_on_off_transition_time
+            name: On/Off Transition
+
+          - type: tile
+            entity: select.ceiling_light_power_on_behavior_on_startup
+            name: Power-on Behavior
+
+          - type: tile
+            entity: update.ceiling_light_firmware
+            name: Ceiling Light Firmware
 
       - type: grid
         cards:
@@ -214,6 +313,9 @@ views:
             title: Echo
             entities:
               - switch.echo_do_not_disturb
+              - binary_sensor.echo_connectivity
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
               - sensor.echo_next_alarm
               - sensor.echo_next_timer
               - sensor.echo_next_reminder
@@ -223,7 +325,6 @@ views:
             entities:
               - notify.echo_speak
               - notify.echo_announce
-
 
   # =========================
   # ENERGY (Totals + kWh)
@@ -243,14 +344,14 @@ views:
           - type: entities
             title: MainDesk
             entities:
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_energy
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_consumption
+              - sensor.maindesk_energy
+              - sensor.maindesk_consumption
 
           - type: entities
             title: WorkStation
             entities:
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_energy
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_consumption
+              - sensor.workstation_energy
+              - sensor.workstation_consumption
 
       - type: grid
         cards:
@@ -261,14 +362,13 @@ views:
             title: MainDesk Power
             hours_to_show: 24
             entities:
-              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_power
+              - sensor.maindesk_power
 
           - type: history-graph
             title: WorkStation Power
             hours_to_show: 24
             entities:
-              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_power
-
+              - sensor.workstation_power
 
   # =========================
   # SYSTEM (Updates + Backups)
@@ -302,6 +402,12 @@ views:
               - update.file_editor_update
               - update.terminal_ssh_update
               - update.custom_sidebar_update
+
+          - type: entities
+            title: Misc Updates
+            entities:
+              - update.air_purifier_firmware
+              - update.ceiling_light_firmware
 
       - type: grid
         cards:
