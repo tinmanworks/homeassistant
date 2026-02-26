@@ -1,0 +1,267 @@
+views:
+
+  #################################################
+  # HOME VIEW — daily controls + presence + status
+  #################################################
+  - type: sections
+    title: Home
+    path: home
+    icon: mdi:home
+    max_columns: 3
+    sections:
+
+      # QUICK CONTROL TILES
+      - type: grid
+        cards:
+          - type: heading
+            heading: Quick Controls
+
+          # Main lighting
+          - type: tile
+            entity: light.ceiling_light
+            name: Ceiling Light
+
+          # Air purifier toggle
+          - type: tile
+            entity: fan.air_purifier
+            name: Air Purifier
+
+          # Alexa DND
+          - type: tile
+            entity: switch.echo_do_not_disturb
+            name: Echo DND
+
+          # Force Google Home sync
+          - type: tile
+            entity: button.google_assistant_synchronize_devices
+            name: Sync Google
+
+      # PRESENCE + SENSOR STATUS
+      - type: grid
+        cards:
+          - type: heading
+            heading: Status
+
+          # Person/device tracking
+          - type: entities
+            title: Presence
+            entities:
+              - person.george_gil
+              - device_tracker.georges_iphone
+              - device_tracker.georges_ipad_pro
+              - device_tracker.zfold7
+
+          # Echo environment sensors
+          - type: entities
+            title: Echo Sensors
+            entities:
+              - binary_sensor.echo_motion
+              - binary_sensor.echo_connectivity
+              - sensor.echo_illuminance
+              - sensor.echo_next_alarm
+              - sensor.echo_next_timer
+
+      # GENERAL INFO
+      - type: grid
+        cards:
+          - type: heading
+            heading: Overview
+
+          - type: weather-forecast
+            entity: weather.forecast_home
+
+          - type: entities
+            title: Sun
+            entities:
+              - sensor.sun_next_rising
+              - sensor.sun_next_setting
+
+          - type: entities
+            title: Backup Status
+            entities:
+              - sensor.backup_backup_manager_state
+              - sensor.backup_last_successful_automatic_backup
+
+
+  #################################################
+  # WORKSPACE — your actual engineering setup
+  #################################################
+  - type: sections
+    title: Workspace
+    path: workspace
+    icon: mdi:desk
+    max_columns: 3
+    sections:
+
+      #############################################
+      # PRIMARY DESK (coding workstation)
+      #############################################
+      - type: grid
+        cards:
+          - type: heading
+            heading: Primary Desk
+
+          # MAIN DESK POWER PLUG
+          # Replace with helper if you make one
+          - type: tile
+            entity: switch.smart_switch_25021405918612510d01c4e7ae1322c3_outlet
+            name: Desk Power
+
+          # Samsung monitor remote power
+          - type: tile
+            entity: remote.samsung_monitor_on_off
+            name: Monitor Power
+
+          # Monitor audio/media
+          - type: tile
+            entity: media_player.samsung_monitor
+            name: Monitor Media
+
+          # Overhead lighting
+          - type: tile
+            entity: light.ceiling_light
+            name: Ceiling Light
+
+          # Motion/light sensing near desk
+          - type: entities
+            title: Desk Context
+            entities:
+              - sensor.echo_illuminance
+              - binary_sensor.echo_motion
+
+      #############################################
+      # MAKER STATION (electronics + 3D printing)
+      #############################################
+      - type: grid
+        cards:
+          - type: heading
+            heading: Maker Station
+
+          # Workbench plug
+          - type: tile
+            entity: switch.smart_switch_25021451086062510d01c4e7ae1321fa_outlet
+            name: Workbench Power
+
+          # Air purifier control
+          - type: tile
+            entity: fan.air_purifier
+
+          # Purifier detailed info
+          - type: entities
+            title: Air Quality
+            entities:
+              - sensor.air_purifier_air_quality
+              - sensor.air_purifier_pm2_5
+              - sensor.air_purifier_filter_lifetime
+
+      #############################################
+      # SENSOR HISTORY
+      #############################################
+      - type: grid
+        cards:
+          - type: heading
+            heading: Monitoring
+
+          # Air quality trend
+          - type: history-graph
+            hours_to_show: 24
+            entities:
+              - sensor.air_purifier_pm2_5
+
+          # Motion/light activity
+          - type: history-graph
+            hours_to_show: 24
+            entities:
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
+
+
+  #################################################
+  # ENERGY — electricity tracking for desks
+  #################################################
+  - type: sections
+    title: Energy
+    path: energy
+    icon: mdi:lightning-bolt
+    max_columns: 3
+    sections:
+
+      # LIVE POWER
+      - type: grid
+        cards:
+          - type: heading
+            heading: Live Power
+
+          - type: entities
+            title: Desk Plug
+            entities:
+              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_power
+              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_voltage
+              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_current
+
+          - type: entities
+            title: Workbench Plug
+            entities:
+              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_power
+              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_voltage
+              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_current
+
+      # ENERGY TOTALS
+      - type: grid
+        cards:
+          - type: heading
+            heading: Energy Totals
+
+          - type: entities
+            title: Desk Energy
+            entities:
+              - sensor.smart_switch_25021405918612510d01c4e7ae1322c3_energy
+
+          - type: entities
+            title: Workbench Energy
+            entities:
+              - sensor.smart_switch_25021451086062510d01c4e7ae1321fa_energy
+
+
+  #################################################
+  # MEDIA — speakers + casting
+  #################################################
+  - type: sections
+    title: Media
+    path: media
+    icon: mdi:play-circle
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Players
+
+          - type: media-control
+            entity: media_player.homepod_mini
+
+          - type: media-control
+            entity: media_player.samsung_monitor
+
+
+  #################################################
+  # SYSTEM — HA health + updates
+  #################################################
+  - type: sections
+    title: System
+    path: system
+    icon: mdi:server
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Updates
+
+          - type: entities
+            entities:
+              - update.home_assistant_core_update
+              - update.home_assistant_operating_system_update
+              - update.home_assistant_supervisor_update
+              - update.hacs_update
+              - update.cloudflared_update
