@@ -8,13 +8,19 @@ views:
     path: home
     icon: mdi:home
     max_columns: 3
+
+    # Useful HACS: layout-card (optional), card-mod, browser_mod, mini-graph-card
+    # This view stays native "sections" for stability; we use card-mod + mini-graph-card + browser_mod.
+
     sections:
       - type: grid
         cards:
           - type: heading
             heading: Mode & Essentials
 
-          # One-tap Room Mode buttons (no popup)
+          # =========================
+          # Mode buttons (with subtle styling)
+          # =========================
           - type: horizontal-stack
             cards:
               - type: button
@@ -27,6 +33,9 @@ views:
                     entity_id: input_select.room_mode
                   data:
                     option: WorkSpace
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 16px; }
 
               - type: button
                 name: Lounge
@@ -38,6 +47,9 @@ views:
                     entity_id: input_select.room_mode
                   data:
                     option: Lounge
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 16px; }
 
               - type: button
                 name: Sleep
@@ -49,6 +61,9 @@ views:
                     entity_id: input_select.room_mode
                   data:
                     option: Sleep
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 16px; }
 
               - type: button
                 name: Away
@@ -60,37 +75,136 @@ views:
                     entity_id: input_select.room_mode
                   data:
                     option: Away
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 16px; }
 
-          # Current mode (readable state)
+          # Current mode (clean entity row)
           - type: entity
             entity: input_select.room_mode
             name: Current Room Mode
             icon: mdi:home-variant
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
+          # =========================
+          # Quick tiles
+          # =========================
           - type: tile
             entity: light.ceiling_light
             name: Ceiling Light
             icon: mdi:ceiling-light
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Ceiling Light
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: light
+                      entity: light.ceiling_light
+                    - type: entities
+                      title: Settings
+                      entities:
+                        - number.ceiling_light_on_level
+                        - number.ceiling_light_on_transition_time
+                        - number.ceiling_light_off_transition_time
+                        - number.ceiling_light_on_off_transition_time
+                        - select.ceiling_light_power_on_behavior_on_startup
+                        - update.ceiling_light_firmware
+                # browser_mod popup width
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Air Purifier
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: tile
+                      entity: fan.air_purifier
+                      name: Purifier
+                    - type: entities
+                      title: Controls
+                      entities:
+                        - switch.air_purifier_display
+                        - switch.air_purifier_child_lock
+                        - update.air_purifier_firmware
+                    - type: custom:mini-graph-card
+                      name: PM2.5 (24h)
+                      hours_to_show: 24
+                      points_per_hour: 2
+                      entities:
+                        - sensor.air_purifier_pm2_5
+                      show:
+                        icon: false
+                        labels: true
+                        legend: false
+                      card_mod:
+                        style: |
+                          ha-card { border-radius: 16px; }
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: remote.samsung_monitor_on_off
             name: Monitor Power
             icon: mdi:monitor
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: switch.maindesk_outlet
             name: MainDesk Power
             icon: mdi:power-socket-eu
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: switch.workstation_outlet
             name: WorkStation Power
             icon: mdi:power-socket-eu
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
+
+          # =========================
+          # Compact graphs (mini-graph-card)
+          # =========================
+          - type: custom:mini-graph-card
+            name: Desk Power (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            entities:
+              - entity: sensor.maindesk_power
+                name: MainDesk
+              - entity: sensor.workstation_power
+                name: WorkStation
+            show:
+              labels: true
+              legend: true
+              icon: false
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -104,6 +218,9 @@ views:
               - device_tracker.georges_iphone
               - device_tracker.georges_ipad_pro
               - device_tracker.zfold7
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Lounge Sensors (Echo)
@@ -114,6 +231,9 @@ views:
               - sensor.echo_next_alarm
               - sensor.echo_next_timer
               - sensor.echo_next_reminder
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -123,6 +243,9 @@ views:
           - type: weather-forecast
             entity: weather.forecast_home
             name: Forecast
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Air Quality
@@ -130,6 +253,24 @@ views:
               - sensor.air_purifier_air_quality
               - sensor.air_purifier_pm2_5
               - sensor.air_purifier_filter_lifetime
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
+
+          - type: custom:mini-graph-card
+            name: Air Quality Trend (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - entity: sensor.air_purifier_pm2_5
+                name: PM2.5
+            show:
+              icon: false
+              labels: true
+              legend: false
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
   # =========================
   # WORKSPACE (Power + Metrics)
@@ -150,31 +291,49 @@ views:
             entity: switch.maindesk_outlet
             name: MainDesk Outlet
             icon: mdi:power-socket-eu
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: switch.workstation_outlet
             name: WorkStation Outlet
             icon: mdi:power-socket-eu
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: switch.maindesk_config_overtemp_enable
             name: MainDesk Overtemp
             icon: mdi:thermometer-alert
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: switch.workstation_config_overtemp_enable
             name: WorkStation Overtemp
             icon: mdi:thermometer-alert
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: button.maindesk_refresh
             name: Refresh MainDesk
             icon: mdi:refresh
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: button.workstation_refresh
             name: Refresh WorkStation
             icon: mdi:refresh
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -189,6 +348,9 @@ views:
               - sensor.maindesk_voltage
               - sensor.maindesk_signal_strength
               - sensor.maindesk_config_overtemp_type
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: WorkStation (Live)
@@ -198,30 +360,57 @@ views:
               - sensor.workstation_voltage
               - sensor.workstation_signal_strength
               - sensor.workstation_config_overtemp_type
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
           - type: heading
             heading: History (24h)
 
-          - type: history-graph
-            title: MainDesk Power
+          - type: custom:mini-graph-card
+            name: MainDesk Power (24h)
             hours_to_show: 24
+            points_per_hour: 2
             entities:
               - sensor.maindesk_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
-          - type: history-graph
-            title: WorkStation Power
+          - type: custom:mini-graph-card
+            name: WorkStation Power (24h)
             hours_to_show: 24
+            points_per_hour: 2
             entities:
               - sensor.workstation_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
-          - type: history-graph
-            title: Energy (kWh)
+          - type: custom:mini-graph-card
+            name: Energy (kWh) (24h)
             hours_to_show: 24
+            points_per_hour: 2
             entities:
-              - sensor.maindesk_energy
-              - sensor.workstation_energy
+              - entity: sensor.maindesk_energy
+                name: MainDesk
+              - entity: sensor.workstation_energy
+                name: WorkStation
+            show:
+              icon: false
+              labels: true
+              legend: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
   # =========================
   # LOUNGE (Media + Comfort)
@@ -240,19 +429,31 @@ views:
 
           - type: media-control
             entity: media_player.homepod_mini
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: media-control
             entity: media_player.samsung_monitor
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: remote.samsung_monitor_on_off
             name: Monitor Power
             icon: mdi:monitor
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: button.wake_on_lan_6c_70_cb_f0_15_b0
             name: Wake PC (WOL)
             icon: mdi:lan-connect
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -263,11 +464,65 @@ views:
             entity: light.ceiling_light
             name: Ceiling Light
             icon: mdi:ceiling-light
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Ceiling Light Settings
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: light
+                      entity: light.ceiling_light
+                    - type: entities
+                      title: Settings
+                      entities:
+                        - number.ceiling_light_on_level
+                        - number.ceiling_light_on_transition_time
+                        - number.ceiling_light_off_transition_time
+                        - number.ceiling_light_on_off_transition_time
+                        - select.ceiling_light_power_on_behavior_on_startup
+                        - update.ceiling_light_firmware
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: tile
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
+            tap_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Air Purifier
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: tile
+                      entity: fan.air_purifier
+                      name: Purifier
+                    - type: entities
+                      title: Controls
+                      entities:
+                        - switch.air_purifier_display
+                        - switch.air_purifier_child_lock
+                        - update.air_purifier_firmware
+                    - type: custom:mini-graph-card
+                      name: PM2.5 (24h)
+                      hours_to_show: 24
+                      points_per_hour: 2
+                      entities:
+                        - sensor.air_purifier_pm2_5
+                      show:
+                        icon: false
+                        labels: true
+                        legend: false
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Purifier Controls
@@ -275,34 +530,9 @@ views:
               - switch.air_purifier_display
               - switch.air_purifier_child_lock
               - update.air_purifier_firmware
-
-          # Ceiling settings as tiles (no cutoff)
-          - type: heading
-            heading: Ceiling Light Settings
-
-          - type: tile
-            entity: number.ceiling_light_on_level
-            name: On Level
-
-          - type: tile
-            entity: number.ceiling_light_on_transition_time
-            name: On Transition
-
-          - type: tile
-            entity: number.ceiling_light_off_transition_time
-            name: Off Transition
-
-          - type: tile
-            entity: number.ceiling_light_on_off_transition_time
-            name: On/Off Transition
-
-          - type: tile
-            entity: select.ceiling_light_power_on_behavior_on_startup
-            name: Power-on Behavior
-
-          - type: tile
-            entity: update.ceiling_light_firmware
-            name: Ceiling Light Firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -319,12 +549,18 @@ views:
               - sensor.echo_next_alarm
               - sensor.echo_next_timer
               - sensor.echo_next_reminder
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Notify
             entities:
               - notify.echo_speak
               - notify.echo_announce
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
   # =========================
   # ENERGY (Totals + kWh)
@@ -346,29 +582,49 @@ views:
             entities:
               - sensor.maindesk_energy
               - sensor.maindesk_consumption
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: WorkStation
             entities:
               - sensor.workstation_energy
               - sensor.workstation_consumption
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
           - type: heading
             heading: Power Trend (24h)
 
-          - type: history-graph
-            title: MainDesk Power
+          - type: custom:mini-graph-card
+            name: MainDesk Power
             hours_to_show: 24
+            points_per_hour: 2
             entities:
               - sensor.maindesk_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
-          - type: history-graph
-            title: WorkStation Power
+          - type: custom:mini-graph-card
+            name: WorkStation Power
             hours_to_show: 24
+            points_per_hour: 2
             entities:
               - sensor.workstation_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
   # =========================
   # SYSTEM (Updates + Backups)
@@ -391,6 +647,9 @@ views:
               - update.home_assistant_core_update
               - update.home_assistant_operating_system_update
               - update.home_assistant_supervisor_update
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Add-ons
@@ -402,12 +661,18 @@ views:
               - update.file_editor_update
               - update.terminal_ssh_update
               - update.custom_sidebar_update
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
           - type: entities
             title: Misc Updates
             entities:
               - update.air_purifier_firmware
               - update.ceiling_light_firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
 
       - type: grid
         cards:
@@ -420,3 +685,6 @@ views:
               - sensor.backup_last_attempted_automatic_backup
               - sensor.backup_last_successful_automatic_backup
               - sensor.backup_next_scheduled_automatic_backup
+            card_mod:
+              style: |
+                ha-card { border-radius: 16px; }
