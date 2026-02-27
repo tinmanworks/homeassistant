@@ -1,7 +1,10 @@
 views:
   # =========================
-  # HOME (Apple Home-like)
-  # Uses: Mushroom + card-mod + browser_mod + mini-graph-card
+  # HOME (Apple Home-like, but fully functional)
+  # Key change vs your newer YAML:
+  # - Devices that have rich native controls (fan presets/speed) open HA's native "more-info" on TAP
+  # - HOLD opens an Apple-like popup with extra toggles + graphs (optional)
+  # This matches the "older YAML" behavior (native controls always available) while keeping the aesthetic.
   # =========================
   - type: sections
     title: Home
@@ -93,7 +96,9 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          # Smart light control WITH brightness (fix)
+          # Ceiling Light (keep Mushroom look, keep all controls)
+          # TAP -> native more-info (always exposes everything reliably)
+          # HOLD -> your nice popup with settings list
           - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
@@ -103,10 +108,8 @@ views:
             show_color_control: true
             use_light_color: true
             tap_action:
-              action: toggle
-            hold_action:
               action: more-info
-            double_tap_action:
+            hold_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -131,8 +134,9 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          # Air purifier (Apple-like) + popup for advanced controls
-          # NOTE: Speed/presets only show if your fan entity supports them.
+          # Air Purifier (keep Mushroom look, but restore "older YAML" functionality)
+          # TAP -> native more-info (this is what exposes Auto/Manual, speed, etc.)
+          # HOLD -> popup with extras (toggles + sensors + graph)
           - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
@@ -141,7 +145,7 @@ views:
             show_oscillate_control: false
             show_direction_control: false
             tap_action:
-              action: toggle
+              action: more-info
             hold_action:
               action: fire-dom-event
               browser_mod:
@@ -150,15 +154,15 @@ views:
                 card:
                   type: vertical-stack
                   cards:
-                    # This "more-info" is the most reliable way to expose:
-                    # - preset modes (Auto/Manual etc)
-                    # - speed/percentage
-                    # - any fan-specific features from the integration
-                    - type: entity
+                    # Include a tile with features: if supported, you get slider + preset dropdown
+                    # If not supported, it simply won't show those feature controls.
+                    - type: tile
                       entity: fan.air_purifier
-                      name: Air Purifier (Controls)
-                      tap_action:
-                        action: more-info
+                      name: Purifier
+                      icon: mdi:air-purifier
+                      features:
+                        - type: fan-speed
+                        - type: fan-preset-modes
 
                     - type: entities
                       title: Device Toggles
@@ -166,6 +170,13 @@ views:
                         - switch.air_purifier_display
                         - switch.air_purifier_child_lock
                         - update.air_purifier_firmware
+
+                    - type: entities
+                      title: Sensors
+                      entities:
+                        - sensor.air_purifier_air_quality
+                        - sensor.air_purifier_pm2_5
+                        - sensor.air_purifier_filter_lifetime
 
                     - type: custom:mini-graph-card
                       name: PM2.5 (24h)
@@ -256,6 +267,8 @@ views:
                 name: iPhone 14 Pro
                 icon: mdi:cellphone
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -265,6 +278,8 @@ views:
                 name: iPad Pro 12.9 inch 6th Gen
                 icon: mdi:tablet
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -274,6 +289,8 @@ views:
                 name: Z Fold 7
                 icon: mdi:cellphone
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -311,6 +328,8 @@ views:
                 name: Air Quality
                 icon: mdi:blur
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -320,6 +339,8 @@ views:
                 name: PM2.5
                 icon: mdi:molecule
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -329,6 +350,8 @@ views:
                 name: Filter Lifetime
                 icon: mdi:air-filter
                 layout: horizontal
+                tap_action:
+                  action: more-info
                 card_mod:
                   style: |
                     ha-card { border-radius: 18px; }
@@ -566,7 +589,7 @@ views:
           - type: heading
             heading: Comfort
 
-          # Ceiling light WITH brightness control
+          # Ceiling light: TAP -> more-info (full native controls), HOLD -> popup with settings
           - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
@@ -576,10 +599,8 @@ views:
             show_color_control: true
             use_light_color: true
             tap_action:
-              action: toggle
-            hold_action:
               action: more-info
-            double_tap_action:
+            hold_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -604,8 +625,8 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          # Air purifier WITH speed control + popup for any preset modes
-          # NOTE: show_percentage_control works only if fan supports percentage.
+          # Air purifier: TAP -> more-info (restores full native controls like your older YAML),
+          # HOLD -> popup with extras + optional speed/preset tile features.
           - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
@@ -614,7 +635,7 @@ views:
             show_oscillate_control: false
             show_direction_control: false
             tap_action:
-              action: toggle
+              action: more-info
             hold_action:
               action: fire-dom-event
               browser_mod:
@@ -623,12 +644,13 @@ views:
                 card:
                   type: vertical-stack
                   cards:
-                    # more-info exposes preset modes (Auto/Manual) if supported
-                    - type: entity
+                    - type: tile
                       entity: fan.air_purifier
-                      name: Air Purifier (Mode / Speed)
-                      tap_action:
-                        action: more-info
+                      name: Purifier
+                      icon: mdi:air-purifier
+                      features:
+                        - type: fan-speed
+                        - type: fan-preset-modes
 
                     - type: entities
                       title: Device Toggles
@@ -636,6 +658,13 @@ views:
                         - switch.air_purifier_display
                         - switch.air_purifier_child_lock
                         - update.air_purifier_firmware
+
+                    - type: entities
+                      title: Sensors
+                      entities:
+                        - sensor.air_purifier_air_quality
+                        - sensor.air_purifier_pm2_5
+                        - sensor.air_purifier_filter_lifetime
 
                     - type: custom:mini-graph-card
                       name: PM2.5 (24h)
