@@ -140,7 +140,7 @@ views:
           - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
-            icon: mdi:air-purifier
+            icon: mdi:fan
             show_percentage_control: true
             show_oscillate_control: false
             show_direction_control: false
@@ -193,6 +193,7 @@ views:
             card_mod:
               style: |
                 ha-card { border-radius: 18px; }
+            icon_animation: true
 
           # Monitor power (Apple-like)
           - type: custom:mushroom-entity-card
@@ -632,7 +633,7 @@ views:
           - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
-            icon: mdi:air-purifier
+            icon: mdi:fan
             show_percentage_control: true
             show_oscillate_control: false
             show_direction_control: false
@@ -683,6 +684,7 @@ views:
             card_mod:
               style: |
                 ha-card { border-radius: 18px; }
+            icon_animation: true
 
           - type: entities
             title: Purifier Controls
