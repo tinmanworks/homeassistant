@@ -1,6 +1,7 @@
 views:
   # =========================
-  # HOME (Command Center)
+  # HOME (Apple Home-like)
+  # Uses: Mushroom + card-mod + browser_mod + mini-graph-card
   # =========================
   - type: sections
     title: Home
@@ -8,24 +9,20 @@ views:
     path: home
     icon: mdi:home
     max_columns: 3
-
-    # Useful HACS: layout-card (optional), card-mod, browser_mod, mini-graph-card
-    # This view stays native "sections" for stability; we use card-mod + mini-graph-card + browser_mod.
-
     sections:
       - type: grid
         cards:
           - type: heading
             heading: Mode & Essentials
 
-          # =========================
-          # Mode buttons (with subtle styling)
-          # =========================
+          # Mode buttons (Apple-like pills)
           - type: horizontal-stack
             cards:
-              - type: button
-                name: Workspace
+              - type: custom:mushroom-template-card
+                primary: Workspace
                 icon: mdi:desk
+                layout: horizontal
+                fill_container: true
                 tap_action:
                   action: call-service
                   service: input_select.select_option
@@ -35,11 +32,13 @@ views:
                     option: WorkSpace
                 card_mod:
                   style: |
-                    ha-card { border-radius: 16px; }
+                    ha-card { border-radius: 18px; }
 
-              - type: button
-                name: Lounge
+              - type: custom:mushroom-template-card
+                primary: Lounge
                 icon: mdi:sofa
+                layout: horizontal
+                fill_container: true
                 tap_action:
                   action: call-service
                   service: input_select.select_option
@@ -49,11 +48,13 @@ views:
                     option: Lounge
                 card_mod:
                   style: |
-                    ha-card { border-radius: 16px; }
+                    ha-card { border-radius: 18px; }
 
-              - type: button
-                name: Sleep
+              - type: custom:mushroom-template-card
+                primary: Sleep
                 icon: mdi:sleep
+                layout: horizontal
+                fill_container: true
                 tap_action:
                   action: call-service
                   service: input_select.select_option
@@ -63,11 +64,13 @@ views:
                     option: Sleep
                 card_mod:
                   style: |
-                    ha-card { border-radius: 16px; }
+                    ha-card { border-radius: 18px; }
 
-              - type: button
-                name: Away
+              - type: custom:mushroom-template-card
+                primary: Away
                 icon: mdi:exit-run
+                layout: horizontal
+                fill_container: true
                 tap_action:
                   action: call-service
                   service: input_select.select_option
@@ -77,25 +80,35 @@ views:
                     option: Away
                 card_mod:
                   style: |
-                    ha-card { border-radius: 16px; }
+                    ha-card { border-radius: 18px; }
 
-          # Current mode (clean entity row)
-          - type: entity
-            entity: input_select.room_mode
-            name: Current Room Mode
+          # Current mode (Apple-like status)
+          - type: custom:mushroom-template-card
+            primary: Room Mode
+            secondary: "{{ states('input_select.room_mode') }}"
             icon: mdi:home-variant
+            layout: horizontal
+            fill_container: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           # =========================
-          # Quick tiles
+          # Smart light control WITH brightness (fix)
           # =========================
-          - type: tile
+          - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
             icon: mdi:ceiling-light
+            show_brightness_control: true
+            show_color_temp_control: true
+            show_color_control: true
+            use_light_color: true
             tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -114,18 +127,20 @@ views:
                         - number.ceiling_light_on_off_transition_time
                         - select.ceiling_light_power_on_behavior_on_startup
                         - update.ceiling_light_firmware
-                # browser_mod popup width
                 deviceID:
                   - this
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
+          # Air purifier (Apple-like)
+          - type: custom:mushroom-entity-card
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
             tap_action:
+              action: toggle
+            hold_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -152,42 +167,45 @@ views:
                         icon: false
                         labels: true
                         legend: false
-                      card_mod:
-                        style: |
-                          ha-card { border-radius: 16px; }
-                deviceID:
-                  - this
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
+          # Monitor power (Apple-like)
+          - type: custom:mushroom-entity-card
             entity: remote.samsung_monitor_on_off
             name: Monitor Power
             icon: mdi:monitor
+            tap_action:
+              action: more-info
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: switch.maindesk_outlet
-            name: MainDesk Power
-            icon: mdi:power-socket-eu
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          # Desk power (Apple-like)
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_outlet
+                name: MainDesk Power
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: switch.workstation_outlet
-            name: WorkStation Power
-            icon: mdi:power-socket-eu
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_outlet
+                name: WorkStation Power
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          # =========================
-          # Compact graphs (mini-graph-card)
-          # =========================
+          # Desk power graph
           - type: custom:mini-graph-card
             name: Desk Power (24h)
             hours_to_show: 24
@@ -204,24 +222,48 @@ views:
               icon: false
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
           - type: heading
             heading: Presence & Sensors
 
-          - type: entities
-            title: Presence
-            entities:
-              - person.george_gil
-              - device_tracker.georges_iphone
-              - device_tracker.georges_ipad_pro
-              - device_tracker.zfold7
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          # Presence (Apple-like)
+          - type: vertical-stack
+            cards:
+                - type: custom:mushroom-person-card
+                  entity: person.george_gil
+                  layout: horizontal
+                  card_mod:
+                    style: |
+                      ha-card { border-radius: 18px; }
+                - type: custom:mushroom-entity-card
+                  entity: device_tracker.georges_iphone
+                  name: iPhone 14 Pro
+                  icon: mdi:cellphone
+                  layout: horizontal
+                  card_mod:
+                    style: |
+                      ha-card { border-radius: 18px; }
+                - type: custom:mushroom-entity-card
+                  entity: device_tracker.georges_ipad_pro
+                  name: iPad Pro 12.9 inch 6th Gen
+                  icon: mdi:tablet
+                  layout: horizontal
+                  card_mod:
+                    style: |
+                      ha-card { border-radius: 18px; }
+                - type: custom:mushroom-entity-card
+                  entity: device_tracker.zfold7
+                  name: Z Fold 7
+                  icon: mdi:cellphone
+                  layout: horizontal
+                  card_mod:
+                    style: |
+                      ha-card { border-radius: 18px; }
 
+          # Echo sensors (dense list)
           - type: entities
             title: Lounge Sensors (Echo)
             entities:
@@ -233,7 +275,7 @@ views:
               - sensor.echo_next_reminder
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -245,35 +287,53 @@ views:
             name: Forecast
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: entities
-            title: Air Quality
-            entities:
-              - sensor.air_purifier_air_quality
-              - sensor.air_purifier_pm2_5
-              - sensor.air_purifier_filter_lifetime
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_air_quality
+                name: Air Quality
+                icon: mdi:blur
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_pm2_5
+                name: PM2.5
+                icon: mdi:molecule
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_filter_lifetime
+                name: Filter Lifetime
+                icon: mdi:air-filter
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
           - type: custom:mini-graph-card
-            name: Air Quality Trend (24h)
+            name: PM2.5 Trend (24h)
             hours_to_show: 24
             points_per_hour: 2
             entities:
-              - entity: sensor.air_purifier_pm2_5
-                name: PM2.5
+              - sensor.air_purifier_pm2_5
             show:
               icon: false
               labels: true
               legend: false
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
   # =========================
-  # WORKSPACE (Power + Metrics)
+  # WORKSPACE (Apple Home-like)
   # =========================
   - type: sections
     title: WorkSpace
@@ -287,53 +347,77 @@ views:
           - type: heading
             heading: Controls
 
-          - type: tile
-            entity: switch.maindesk_outlet
-            name: MainDesk Outlet
-            icon: mdi:power-socket-eu
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_outlet
+                name: MainDesk Outlet
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: switch.workstation_outlet
-            name: WorkStation Outlet
-            icon: mdi:power-socket-eu
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_outlet
+                name: WorkStation Outlet
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: switch.maindesk_config_overtemp_enable
-            name: MainDesk Overtemp
-            icon: mdi:thermometer-alert
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_config_overtemp_enable
+                name: MainDesk Overtemp
+                icon: mdi:thermometer-alert
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: switch.workstation_config_overtemp_enable
-            name: WorkStation Overtemp
-            icon: mdi:thermometer-alert
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_config_overtemp_enable
+                name: WorkStation Overtemp
+                icon: mdi:thermometer-alert
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: button.maindesk_refresh
-            name: Refresh MainDesk
-            icon: mdi:refresh
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: button.maindesk_refresh
+                name: Refresh MainDesk
+                icon: mdi:refresh
+                tap_action:
+                  action: call-service
+                  service: button.press
+                  target:
+                    entity_id: button.maindesk_refresh
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
-          - type: tile
-            entity: button.workstation_refresh
-            name: Refresh WorkStation
-            icon: mdi:refresh
-            card_mod:
-              style: |
-                ha-card { border-radius: 16px; }
+              - type: custom:mushroom-entity-card
+                entity: button.workstation_refresh
+                name: Refresh WorkStation
+                icon: mdi:refresh
+                tap_action:
+                  action: call-service
+                  service: button.press
+                  target:
+                    entity_id: button.workstation_refresh
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -350,7 +434,7 @@ views:
               - sensor.maindesk_config_overtemp_type
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: WorkStation (Live)
@@ -362,7 +446,7 @@ views:
               - sensor.workstation_config_overtemp_type
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -380,7 +464,7 @@ views:
               labels: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: custom:mini-graph-card
             name: WorkStation Power (24h)
@@ -393,7 +477,7 @@ views:
               labels: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: custom:mini-graph-card
             name: Energy (kWh) (24h)
@@ -410,10 +494,10 @@ views:
               legend: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
   # =========================
-  # LOUNGE (Media + Comfort)
+  # LOUNGE (Apple Home-like)
   # =========================
   - type: sections
     title: Lounge
@@ -431,40 +515,56 @@ views:
             entity: media_player.homepod_mini
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: media-control
             entity: media_player.samsung_monitor
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
+          - type: custom:mushroom-entity-card
             entity: remote.samsung_monitor_on_off
             name: Monitor Power
             icon: mdi:monitor
+            tap_action:
+              action: more-info
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
+          - type: custom:mushroom-entity-card
             entity: button.wake_on_lan_6c_70_cb_f0_15_b0
             name: Wake PC (WOL)
             icon: mdi:lan-connect
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.wake_on_lan_6c_70_cb_f0_15_b0
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
           - type: heading
             heading: Comfort
 
-          - type: tile
+          # Ceiling light WITH brightness control (same fix here)
+          - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
             icon: mdi:ceiling-light
+            show_brightness_control: true
+            show_color_temp_control: true
+            show_color_control: true
+            use_light_color: true
             tap_action:
+              action: toggle
+            hold_action:
+              action: more-info
+            double_tap_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -487,13 +587,15 @@ views:
                   - this
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
-          - type: tile
+          - type: custom:mushroom-entity-card
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
             tap_action:
+              action: toggle
+            hold_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
@@ -520,9 +622,11 @@ views:
                         icon: false
                         labels: true
                         legend: false
+                deviceID:
+                  - this
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: Purifier Controls
@@ -532,7 +636,52 @@ views:
               - update.air_purifier_firmware
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
+
+          - type: heading
+            heading: Ceiling Light Settings
+
+          - type: tile
+            entity: number.ceiling_light_on_level
+            name: On Level
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_on_transition_time
+            name: On Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_off_transition_time
+            name: Off Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_on_off_transition_time
+            name: On/Off Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: select.ceiling_light_power_on_behavior_on_startup
+            name: Power-on Behavior
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: update.ceiling_light_firmware
+            name: Ceiling Light Firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -551,7 +700,7 @@ views:
               - sensor.echo_next_reminder
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: Notify
@@ -560,10 +709,10 @@ views:
               - notify.echo_announce
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
   # =========================
-  # ENERGY (Totals + kWh)
+  # ENERGY (Apple Home-like)
   # =========================
   - type: sections
     title: Energy
@@ -584,7 +733,7 @@ views:
               - sensor.maindesk_consumption
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: WorkStation
@@ -593,7 +742,7 @@ views:
               - sensor.workstation_consumption
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -611,7 +760,7 @@ views:
               labels: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: custom:mini-graph-card
             name: WorkStation Power
@@ -624,10 +773,10 @@ views:
               labels: true
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
   # =========================
-  # SYSTEM (Updates + Backups)
+  # SYSTEM (Apple Home-like)
   # =========================
   - type: sections
     title: System
@@ -649,7 +798,7 @@ views:
               - update.home_assistant_supervisor_update
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: Add-ons
@@ -663,7 +812,7 @@ views:
               - update.custom_sidebar_update
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
           - type: entities
             title: Misc Updates
@@ -672,7 +821,7 @@ views:
               - update.ceiling_light_firmware
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
 
       - type: grid
         cards:
@@ -687,4 +836,4 @@ views:
               - sensor.backup_next_scheduled_automatic_backup
             card_mod:
               style: |
-                ha-card { border-radius: 16px; }
+                ha-card { border-radius: 18px; }
