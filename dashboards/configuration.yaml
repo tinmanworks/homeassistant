@@ -253,7 +253,9 @@ views:
             heading: Presence & Sensors
 
           # Presence (Apple-like)
-          - type: vertical-stack
+          - type: grid
+            columns: 2
+            square: false
             cards:
               - type: custom:mushroom-person-card
                 entity: person.george_gil
@@ -286,7 +288,7 @@ views:
 
               - type: custom:mushroom-entity-card
                 entity: device_tracker.zfold7
-                name: Z Fold 7
+                name: Galaxy Z Fold 7
                 icon: mdi:cellphone
                 layout: horizontal
                 tap_action:
