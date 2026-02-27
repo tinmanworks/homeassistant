@@ -93,9 +93,7 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          # =========================
           # Smart light control WITH brightness (fix)
-          # =========================
           - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
@@ -133,11 +131,15 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          # Air purifier (Apple-like)
-          - type: custom:mushroom-entity-card
+          # Air purifier (Apple-like) + popup for advanced controls
+          # NOTE: Speed/presets only show if your fan entity supports them.
+          - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
+            show_percentage_control: true
+            show_oscillate_control: false
+            show_direction_control: false
             tap_action:
               action: toggle
             hold_action:
@@ -148,15 +150,23 @@ views:
                 card:
                   type: vertical-stack
                   cards:
-                    - type: tile
+                    # This "more-info" is the most reliable way to expose:
+                    # - preset modes (Auto/Manual etc)
+                    # - speed/percentage
+                    # - any fan-specific features from the integration
+                    - type: entity
                       entity: fan.air_purifier
-                      name: Purifier
+                      name: Air Purifier (Controls)
+                      tap_action:
+                        action: more-info
+
                     - type: entities
-                      title: Controls
+                      title: Device Toggles
                       entities:
                         - switch.air_purifier_display
                         - switch.air_purifier_child_lock
                         - update.air_purifier_firmware
+
                     - type: custom:mini-graph-card
                       name: PM2.5 (24h)
                       hours_to_show: 24
@@ -167,6 +177,8 @@ views:
                         icon: false
                         labels: true
                         legend: false
+                deviceID:
+                  - this
             card_mod:
               style: |
                 ha-card { border-radius: 18px; }
@@ -232,36 +244,39 @@ views:
           # Presence (Apple-like)
           - type: vertical-stack
             cards:
-                - type: custom:mushroom-person-card
-                  entity: person.george_gil
-                  layout: horizontal
-                  card_mod:
-                    style: |
-                      ha-card { border-radius: 18px; }
-                - type: custom:mushroom-entity-card
-                  entity: device_tracker.georges_iphone
-                  name: iPhone 14 Pro
-                  icon: mdi:cellphone
-                  layout: horizontal
-                  card_mod:
-                    style: |
-                      ha-card { border-radius: 18px; }
-                - type: custom:mushroom-entity-card
-                  entity: device_tracker.georges_ipad_pro
-                  name: iPad Pro 12.9 inch 6th Gen
-                  icon: mdi:tablet
-                  layout: horizontal
-                  card_mod:
-                    style: |
-                      ha-card { border-radius: 18px; }
-                - type: custom:mushroom-entity-card
-                  entity: device_tracker.zfold7
-                  name: Z Fold 7
-                  icon: mdi:cellphone
-                  layout: horizontal
-                  card_mod:
-                    style: |
-                      ha-card { border-radius: 18px; }
+              - type: custom:mushroom-person-card
+                entity: person.george_gil
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.georges_iphone
+                name: iPhone 14 Pro
+                icon: mdi:cellphone
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.georges_ipad_pro
+                name: iPad Pro 12.9 inch 6th Gen
+                icon: mdi:tablet
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.zfold7
+                name: Z Fold 7
+                icon: mdi:cellphone
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
 
           # Echo sensors (dense list)
           - type: entities
@@ -551,7 +566,7 @@ views:
           - type: heading
             heading: Comfort
 
-          # Ceiling light WITH brightness control (same fix here)
+          # Ceiling light WITH brightness control
           - type: custom:mushroom-light-card
             entity: light.ceiling_light
             name: Ceiling Light
@@ -589,29 +604,39 @@ views:
               style: |
                 ha-card { border-radius: 18px; }
 
-          - type: custom:mushroom-entity-card
+          # Air purifier WITH speed control + popup for any preset modes
+          # NOTE: show_percentage_control works only if fan supports percentage.
+          - type: custom:mushroom-fan-card
             entity: fan.air_purifier
             name: Air Purifier
             icon: mdi:air-purifier
+            show_percentage_control: true
+            show_oscillate_control: false
+            show_direction_control: false
             tap_action:
               action: toggle
             hold_action:
               action: fire-dom-event
               browser_mod:
                 command: popup
-                title: Air Purifier
+                title: Air Purifier Controls
                 card:
                   type: vertical-stack
                   cards:
-                    - type: tile
+                    # more-info exposes preset modes (Auto/Manual) if supported
+                    - type: entity
                       entity: fan.air_purifier
-                      name: Purifier
+                      name: Air Purifier (Mode / Speed)
+                      tap_action:
+                        action: more-info
+
                     - type: entities
-                      title: Controls
+                      title: Device Toggles
                       entities:
                         - switch.air_purifier_display
                         - switch.air_purifier_child_lock
                         - update.air_purifier_firmware
+
                     - type: custom:mini-graph-card
                       name: PM2.5 (24h)
                       hours_to_show: 24
