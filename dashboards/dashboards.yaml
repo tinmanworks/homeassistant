@@ -33,6 +33,13 @@ lounge_room:
   show_in_sidebar: true
   filename: dashboards/rooms/lounge.yaml
 
+all_entities:
+  mode: yaml
+  title: All Entities
+  icon: mdi:format-list-bulleted
+  show_in_sidebar: true
+  filename: dashboards/views/all_entities.yaml
+
 admin_updates:
   mode: yaml
   title: Admin Updates

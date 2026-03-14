@@ -1,11 +1,11 @@
 # Combined Dashboard Export Report
 
-- Source commit: `00f6a13f52cb8acb5c7bb5d162c95bdc29b62a96`
+- Source commit: `84bfdd0b9f63dd4815f5f492c626d5dce0a2cd48-dirty`
 - Registry: `dashboards/dashboards.yaml`
 - Output: `experiments/drafts/dashboards/raw/combined_dashboard.yaml`
 - Include hidden dashboards: `false`
-- Dashboards included: `5`
-- Total views exported: `5`
+- Dashboards included: `6`
+- Total views exported: `6`
 
 ## Included Dashboards (Registry Order)
 
@@ -14,3 +14,4 @@
 3. `system_overview` -> `dashboards/views/system.yaml` (1 view(s), show_in_sidebar=True)
 4. `workspace_room` -> `dashboards/rooms/workspace.yaml` (1 view(s), show_in_sidebar=True)
 5. `lounge_room` -> `dashboards/rooms/lounge.yaml` (1 view(s), show_in_sidebar=True)
+6. `all_entities` -> `dashboards/views/all_entities.yaml` (1 view(s), show_in_sidebar=True)

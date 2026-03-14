@@ -9,6 +9,16 @@ Production Lovelace dashboards are YAML-managed here.
 
 Draft or unvalidated dashboards belong in `experiments/drafts/dashboards/` until validated.
 
+## Live Entity Sync
+
+Populate/update `views/all_entities.yaml` from live Home Assistant entities:
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
+```
+
+This command computes missing entities (`live - curated`) and places them in the visible All Entities catalog view.
+
 ## Raw YAML Export (Copy-Paste Friendly)
 
 Use canonical dashboard files in this directory as source, then generate one combined raw YAML:
