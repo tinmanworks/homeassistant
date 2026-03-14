@@ -10,6 +10,13 @@ From repo root:
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
 ```
 
+By default this also updates generated `Auto Additions (Generated)` sections in curated views.
+Use catalog-only mode if you want to skip curated auto updates:
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only
+```
+
 Then generate combined raw output:
 
 ```bash

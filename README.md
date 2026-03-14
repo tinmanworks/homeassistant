@@ -45,7 +45,24 @@ export HA_TOKEN=\"<LONG_LIVED_TOKEN>\"
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
 ```
 
-This sync updates `dashboards/views/all_entities.yaml` with missing live entities not already in curated views.
+Default `sync-live` behavior:
+- updates `dashboards/views/all_entities.yaml` with missing live entities not already in curated views
+- updates generated `Auto Additions (Generated)` sections in primary curated dashboards (`home/workspace/lounge/energy/system`)
+
+If you only want the catalog update (no curated auto sections):
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only
+```
+
+If API calls are blocked by reverse proxy/WAF, fetch states with `curl` and run from file:
+
+```bash
+curl -sS -H "Authorization: Bearer $HA_TOKEN" "$HA_URL/api/states" \
+  > experiments/drafts/dashboards/live/live_states_snapshot.json
+python3 python/tools/dashboard_export.py sync-live \
+  --states-file experiments/drafts/dashboards/live/live_states_snapshot.json
+```
 
 Then regenerate combined copy-paste YAML:
 

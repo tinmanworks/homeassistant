@@ -4,49 +4,42 @@ home_overview:
   icon: mdi:home
   show_in_sidebar: true
   filename: dashboards/views/home.yaml
-
 energy_overview:
   mode: yaml
   title: Energy
   icon: mdi:lightning-bolt
   show_in_sidebar: true
   filename: dashboards/views/energy.yaml
-
 system_overview:
   mode: yaml
   title: System
   icon: mdi:server
   show_in_sidebar: true
   filename: dashboards/views/system.yaml
-
 workspace_room:
   mode: yaml
   title: Workspace
   icon: mdi:desk
   show_in_sidebar: true
   filename: dashboards/rooms/workspace.yaml
-
 lounge_room:
   mode: yaml
   title: Lounge
   icon: mdi:sofa
   show_in_sidebar: true
   filename: dashboards/rooms/lounge.yaml
-
 all_entities:
   mode: yaml
   title: All Entities
   icon: mdi:format-list-bulleted
   show_in_sidebar: true
   filename: dashboards/views/all_entities.yaml
-
 admin_updates:
   mode: yaml
   title: Admin Updates
   icon: mdi:update
   show_in_sidebar: false
   filename: dashboards/admin/updates.yaml
-
 admin_backups:
   mode: yaml
   title: Admin Backups
