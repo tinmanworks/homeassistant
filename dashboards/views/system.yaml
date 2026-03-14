@@ -1,0 +1,10 @@
+title: System
+views:
+  - title: System
+    path: system
+    icon: mdi:server
+    cards:
+      - type: markdown
+        content: |
+          # System Dashboard
+          Add update, backup, and health entities here.

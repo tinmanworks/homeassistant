@@ -1,0 +1,422 @@
+views:
+  # =========================
+  # HOME (Command Center)
+  # =========================
+  - type: sections
+    title: Home
+    sub_title: Mode + essentials + status
+    path: home
+    icon: mdi:home
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Mode & Essentials
+
+          # One-tap Room Mode buttons (no popup)
+          - type: horizontal-stack
+            cards:
+              - type: button
+                name: Workspace
+                icon: mdi:desk
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: WorkSpace
+
+              - type: button
+                name: Lounge
+                icon: mdi:sofa
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Lounge
+
+              - type: button
+                name: Sleep
+                icon: mdi:sleep
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Sleep
+
+              - type: button
+                name: Away
+                icon: mdi:exit-run
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Away
+
+          # Current mode (readable state)
+          - type: entity
+            entity: input_select.room_mode
+            name: Current Room Mode
+            icon: mdi:home-variant
+
+          - type: tile
+            entity: light.ceiling_light
+            name: Ceiling Light
+            icon: mdi:ceiling-light
+
+          - type: tile
+            entity: fan.air_purifier
+            name: Air Purifier
+            icon: mdi:air-purifier
+
+          - type: tile
+            entity: remote.samsung_monitor_on_off
+            name: Monitor Power
+            icon: mdi:monitor
+
+          - type: tile
+            entity: switch.maindesk_outlet
+            name: MainDesk Power
+            icon: mdi:power-socket-eu
+
+          - type: tile
+            entity: switch.workstation_outlet
+            name: WorkStation Power
+            icon: mdi:power-socket-eu
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Presence & Sensors
+
+          - type: entities
+            title: Presence
+            entities:
+              - person.george_gil
+              - device_tracker.georges_iphone
+              - device_tracker.georges_ipad_pro
+              - device_tracker.zfold7
+
+          - type: entities
+            title: Lounge Sensors (Echo)
+            entities:
+              - binary_sensor.echo_connectivity
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
+              - sensor.echo_next_alarm
+              - sensor.echo_next_timer
+              - sensor.echo_next_reminder
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Air & Weather
+
+          - type: weather-forecast
+            entity: weather.forecast_home
+            name: Forecast
+
+          - type: entities
+            title: Air Quality
+            entities:
+              - sensor.air_purifier_air_quality
+              - sensor.air_purifier_pm2_5
+              - sensor.air_purifier_filter_lifetime
+
+  # =========================
+  # WORKSPACE (Power + Metrics)
+  # =========================
+  - type: sections
+    title: WorkSpace
+    sub_title: Plugs, power, and reliability
+    path: workspace
+    icon: mdi:desk
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Controls
+
+          - type: tile
+            entity: switch.maindesk_outlet
+            name: MainDesk Outlet
+            icon: mdi:power-socket-eu
+
+          - type: tile
+            entity: switch.workstation_outlet
+            name: WorkStation Outlet
+            icon: mdi:power-socket-eu
+
+          - type: tile
+            entity: switch.maindesk_config_overtemp_enable
+            name: MainDesk Overtemp
+            icon: mdi:thermometer-alert
+
+          - type: tile
+            entity: switch.workstation_config_overtemp_enable
+            name: WorkStation Overtemp
+            icon: mdi:thermometer-alert
+
+          - type: tile
+            entity: button.maindesk_refresh
+            name: Refresh MainDesk
+            icon: mdi:refresh
+
+          - type: tile
+            entity: button.workstation_refresh
+            name: Refresh WorkStation
+            icon: mdi:refresh
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Live Power
+
+          - type: entities
+            title: MainDesk (Live)
+            entities:
+              - sensor.maindesk_power
+              - sensor.maindesk_current
+              - sensor.maindesk_voltage
+              - sensor.maindesk_signal_strength
+              - sensor.maindesk_config_overtemp_type
+
+          - type: entities
+            title: WorkStation (Live)
+            entities:
+              - sensor.workstation_power
+              - sensor.workstation_current
+              - sensor.workstation_voltage
+              - sensor.workstation_signal_strength
+              - sensor.workstation_config_overtemp_type
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: History (24h)
+
+          - type: history-graph
+            title: MainDesk Power
+            hours_to_show: 24
+            entities:
+              - sensor.maindesk_power
+
+          - type: history-graph
+            title: WorkStation Power
+            hours_to_show: 24
+            entities:
+              - sensor.workstation_power
+
+          - type: history-graph
+            title: Energy (kWh)
+            hours_to_show: 24
+            entities:
+              - sensor.maindesk_energy
+              - sensor.workstation_energy
+
+  # =========================
+  # LOUNGE (Media + Comfort)
+  # =========================
+  - type: sections
+    title: Lounge
+    sub_title: Media, light, comfort
+    path: lounge
+    icon: mdi:sofa
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Media
+
+          - type: media-control
+            entity: media_player.homepod_mini
+
+          - type: media-control
+            entity: media_player.samsung_monitor
+
+          - type: tile
+            entity: remote.samsung_monitor_on_off
+            name: Monitor Power
+            icon: mdi:monitor
+
+          - type: tile
+            entity: button.wake_on_lan_6c_70_cb_f0_15_b0
+            name: Wake PC (WOL)
+            icon: mdi:lan-connect
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Comfort
+
+          - type: tile
+            entity: light.ceiling_light
+            name: Ceiling Light
+            icon: mdi:ceiling-light
+
+          - type: tile
+            entity: fan.air_purifier
+            name: Air Purifier
+            icon: mdi:air-purifier
+
+          - type: entities
+            title: Purifier Controls
+            entities:
+              - switch.air_purifier_display
+              - switch.air_purifier_child_lock
+              - update.air_purifier_firmware
+
+          # Ceiling settings as tiles (no cutoff)
+          - type: heading
+            heading: Ceiling Light Settings
+
+          - type: tile
+            entity: number.ceiling_light_on_level
+            name: On Level
+
+          - type: tile
+            entity: number.ceiling_light_on_transition_time
+            name: On Transition
+
+          - type: tile
+            entity: number.ceiling_light_off_transition_time
+            name: Off Transition
+
+          - type: tile
+            entity: number.ceiling_light_on_off_transition_time
+            name: On/Off Transition
+
+          - type: tile
+            entity: select.ceiling_light_power_on_behavior_on_startup
+            name: Power-on Behavior
+
+          - type: tile
+            entity: update.ceiling_light_firmware
+            name: Ceiling Light Firmware
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Echo & Notifications
+
+          - type: entities
+            title: Echo
+            entities:
+              - switch.echo_do_not_disturb
+              - binary_sensor.echo_connectivity
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
+              - sensor.echo_next_alarm
+              - sensor.echo_next_timer
+              - sensor.echo_next_reminder
+
+          - type: entities
+            title: Notify
+            entities:
+              - notify.echo_speak
+              - notify.echo_announce
+
+  # =========================
+  # ENERGY (Totals + kWh)
+  # =========================
+  - type: sections
+    title: Energy
+    sub_title: kWh totals and consumption
+    path: energy
+    icon: mdi:lightning-bolt
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: kWh Totals
+
+          - type: entities
+            title: MainDesk
+            entities:
+              - sensor.maindesk_energy
+              - sensor.maindesk_consumption
+
+          - type: entities
+            title: WorkStation
+            entities:
+              - sensor.workstation_energy
+              - sensor.workstation_consumption
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Power Trend (24h)
+
+          - type: history-graph
+            title: MainDesk Power
+            hours_to_show: 24
+            entities:
+              - sensor.maindesk_power
+
+          - type: history-graph
+            title: WorkStation Power
+            hours_to_show: 24
+            entities:
+              - sensor.workstation_power
+
+  # =========================
+  # SYSTEM (Updates + Backups)
+  # =========================
+  - type: sections
+    title: System
+    sub_title: Updates, backups, maintenance
+    path: system
+    icon: mdi:server
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Updates
+
+          - type: entities
+            title: Core
+            entities:
+              - update.home_assistant_core_update
+              - update.home_assistant_operating_system_update
+              - update.home_assistant_supervisor_update
+
+          - type: entities
+            title: Add-ons
+            entities:
+              - update.hacs_update
+              - update.cloudflared_update
+              - update.matter_server_update
+              - update.meross_lan_update
+              - update.file_editor_update
+              - update.terminal_ssh_update
+              - update.custom_sidebar_update
+
+          - type: entities
+            title: Misc Updates
+            entities:
+              - update.air_purifier_firmware
+              - update.ceiling_light_firmware
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Backups
+
+          - type: entities
+            entities:
+              - sensor.backup_backup_manager_state
+              - sensor.backup_last_attempted_automatic_backup
+              - sensor.backup_last_successful_automatic_backup
+              - sensor.backup_next_scheduled_automatic_backup

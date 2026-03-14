@@ -1,0 +1,10 @@
+title: Admin Backups
+views:
+  - title: Backups
+    path: admin-backups
+    icon: mdi:backup-restore
+    cards:
+      - type: markdown
+        content: |
+          # Backups
+          Track backup state, last success, and next schedule.

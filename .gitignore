@@ -1,0 +1,50 @@
+# Home Assistant secrets and credentials
+secrets.yaml
+secrets*.yaml
+*.secrets.yaml
+.env
+.env.*
+*.key
+*.pem
+*.crt
+*.p12
+*.ovpn
+
+# Home Assistant runtime/state
+.storage/
+home-assistant.log
+home-assistant.log.*
+home-assistant_v2.db
+home-assistant_v2.db-*
+OZW_Log.txt
+ip_bans.yaml
+known_devices.yaml
+core.restore_state
+*.log
+
+# Media/cache/generated runtime data
+tts/
+www/community/
+backup/
+backups/
+*.db
+*.sqlite
+*.sqlite3
+*.tmp
+*.swp
+*.swo
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# OS/editor artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

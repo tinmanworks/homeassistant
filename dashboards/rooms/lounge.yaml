@@ -1,0 +1,10 @@
+title: Lounge
+views:
+  - title: Lounge
+    path: lounge
+    icon: mdi:sofa
+    cards:
+      - type: markdown
+        content: |
+          # Lounge
+          Room-specific controls and telemetry belong here.

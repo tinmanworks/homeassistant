@@ -1,0 +1,897 @@
+views:
+  # =========================
+  # HOME (Apple Home-like, but fully functional)
+  # Key change vs your newer YAML:
+  # - Devices that have rich native controls (fan presets/speed) open HA's native "more-info" on TAP
+  # - HOLD opens an Apple-like popup with extra toggles + graphs (optional)
+  # This matches the "older YAML" behavior (native controls always available) while keeping the aesthetic.
+  # =========================
+  - type: sections
+    title: Home
+    sub_title: Mode + essentials + status
+    path: home
+    icon: mdi:home
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Mode & Essentials
+
+          # Mode buttons (Apple-like pills)
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-template-card
+                primary: Workspace
+                icon: mdi:desk
+                layout: horizontal
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: WorkSpace
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-template-card
+                primary: Lounge
+                icon: mdi:sofa
+                layout: horizontal
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Lounge
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-template-card
+                primary: Sleep
+                icon: mdi:sleep
+                layout: horizontal
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Sleep
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-template-card
+                primary: Away
+                icon: mdi:exit-run
+                layout: horizontal
+                fill_container: true
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  target:
+                    entity_id: input_select.room_mode
+                  data:
+                    option: Away
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          # Current mode (Apple-like status)
+          - type: custom:mushroom-template-card
+            primary: Room Mode
+            secondary: "{{ states('input_select.room_mode') }}"
+            icon: mdi:home-variant
+            layout: horizontal
+            fill_container: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          # Ceiling Light (keep Mushroom look, keep all controls)
+          # TAP -> native more-info (always exposes everything reliably)
+          # HOLD -> your nice popup with settings list
+          - type: custom:mushroom-light-card
+            entity: light.ceiling_light
+            name: Ceiling Light
+            icon: mdi:ceiling-light
+            show_brightness_control: true
+            show_color_temp_control: true
+            show_color_control: true
+            use_light_color: true
+            tap_action:
+              action: more-info
+            hold_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Ceiling Light
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: light
+                      entity: light.ceiling_light
+                    - type: entities
+                      title: Settings
+                      entities:
+                        - number.ceiling_light_on_level
+                        - number.ceiling_light_on_transition_time
+                        - number.ceiling_light_off_transition_time
+                        - number.ceiling_light_on_off_transition_time
+                        - select.ceiling_light_power_on_behavior_on_startup
+                        - update.ceiling_light_firmware
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          # Air Purifier (keep Mushroom look, but restore "older YAML" functionality)
+          # TAP -> native more-info (this is what exposes Auto/Manual, speed, etc.)
+          # HOLD -> popup with extras (toggles + sensors + graph)
+          - type: custom:mushroom-fan-card
+            entity: fan.air_purifier
+            name: Air Purifier
+            icon: mdi:fan
+            show_percentage_control: true
+            show_oscillate_control: false
+            show_direction_control: false
+            tap_action:
+              action: more-info
+            hold_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Air Purifier
+                card:
+                  type: vertical-stack
+                  cards:
+                    # Include a tile with features: if supported, you get slider + preset dropdown
+                    # If not supported, it simply won't show those feature controls.
+                    - type: tile
+                      entity: fan.air_purifier
+                      name: Purifier
+                      icon: mdi:air-purifier
+                      features:
+                        - type: fan-speed
+                        - type: fan-preset-modes
+
+                    - type: entities
+                      title: Device Toggles
+                      entities:
+                        - switch.air_purifier_display
+                        - switch.air_purifier_child_lock
+                        - update.air_purifier_firmware
+
+                    - type: entities
+                      title: Sensors
+                      entities:
+                        - sensor.air_purifier_air_quality
+                        - sensor.air_purifier_pm2_5
+                        - sensor.air_purifier_filter_lifetime
+
+                    - type: custom:mini-graph-card
+                      name: PM2.5 (24h)
+                      hours_to_show: 24
+                      points_per_hour: 2
+                      entities:
+                        - sensor.air_purifier_pm2_5
+                      show:
+                        icon: false
+                        labels: true
+                        legend: false
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+            icon_animation: true
+
+          # Monitor power (Apple-like)
+          - type: custom:mushroom-entity-card
+            entity: remote.samsung_monitor_on_off
+            name: Monitor Power
+            icon: mdi:monitor
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          # Desk power (Apple-like)
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_outlet
+                name: MainDesk Power
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_outlet
+                name: WorkStation Power
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          # Desk power graph
+          - type: custom:mini-graph-card
+            name: Desk Power (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            line_width: 2
+            entities:
+              - entity: sensor.maindesk_power
+                name: MainDesk
+              - entity: sensor.workstation_power
+                name: WorkStation
+            show:
+              labels: true
+              legend: true
+              icon: false
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Presence & Sensors
+
+          # Presence (Apple-like)
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: custom:mushroom-person-card
+                entity: person.george_gil
+                layout: horizontal
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.georges_iphone
+                name: iPhone 14 Pro
+                icon: mdi:cellphone
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.georges_ipad_pro
+                name: iPad Pro 12.9 inch 6th Gen
+                icon: mdi:tablet
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: device_tracker.zfold7
+                name: Galaxy Z Fold 7
+                icon: mdi:cellphone
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          # Echo sensors (dense list)
+          - type: entities
+            title: Lounge Sensors (Echo)
+            entities:
+              - binary_sensor.echo_connectivity
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
+              - sensor.echo_next_alarm
+              - sensor.echo_next_timer
+              - sensor.echo_next_reminder
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Air & Weather
+
+          - type: weather-forecast
+            entity: weather.forecast_home
+            name: Forecast
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: vertical-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_air_quality
+                name: Air Quality
+                icon: mdi:blur
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_pm2_5
+                name: PM2.5
+                icon: mdi:molecule
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: sensor.air_purifier_filter_lifetime
+                name: Filter Lifetime
+                icon: mdi:air-filter
+                layout: horizontal
+                tap_action:
+                  action: more-info
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          - type: custom:mini-graph-card
+            name: PM2.5 Trend (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - sensor.air_purifier_pm2_5
+            show:
+              icon: false
+              labels: true
+              legend: false
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+  # =========================
+  # WORKSPACE (Apple Home-like)
+  # =========================
+  - type: sections
+    title: WorkSpace
+    sub_title: Plugs, power, and reliability
+    path: workspace
+    icon: mdi:desk
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Controls
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_outlet
+                name: MainDesk Outlet
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_outlet
+                name: WorkStation Outlet
+                icon: mdi:power-socket-eu
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: switch.maindesk_config_overtemp_enable
+                name: MainDesk Overtemp
+                icon: mdi:thermometer-alert
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: switch.workstation_config_overtemp_enable
+                name: WorkStation Overtemp
+                icon: mdi:thermometer-alert
+                tap_action:
+                  action: toggle
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: button.maindesk_refresh
+                name: Refresh MainDesk
+                icon: mdi:refresh
+                tap_action:
+                  action: call-service
+                  service: button.press
+                  target:
+                    entity_id: button.maindesk_refresh
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+              - type: custom:mushroom-entity-card
+                entity: button.workstation_refresh
+                name: Refresh WorkStation
+                icon: mdi:refresh
+                tap_action:
+                  action: call-service
+                  service: button.press
+                  target:
+                    entity_id: button.workstation_refresh
+                card_mod:
+                  style: |
+                    ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Live Power
+
+          - type: entities
+            title: MainDesk (Live)
+            entities:
+              - sensor.maindesk_power
+              - sensor.maindesk_current
+              - sensor.maindesk_voltage
+              - sensor.maindesk_signal_strength
+              - sensor.maindesk_config_overtemp_type
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: entities
+            title: WorkStation (Live)
+            entities:
+              - sensor.workstation_power
+              - sensor.workstation_current
+              - sensor.workstation_voltage
+              - sensor.workstation_signal_strength
+              - sensor.workstation_config_overtemp_type
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: History (24h)
+
+          - type: custom:mini-graph-card
+            name: MainDesk Power (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - sensor.maindesk_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: custom:mini-graph-card
+            name: WorkStation Power (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - sensor.workstation_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: custom:mini-graph-card
+            name: Energy (kWh) (24h)
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - entity: sensor.maindesk_energy
+                name: MainDesk
+              - entity: sensor.workstation_energy
+                name: WorkStation
+            show:
+              icon: false
+              labels: true
+              legend: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+  # =========================
+  # LOUNGE (Apple Home-like)
+  # =========================
+  - type: sections
+    title: Lounge
+    sub_title: Media, light, comfort
+    path: lounge
+    icon: mdi:sofa
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Media
+
+          - type: media-control
+            entity: media_player.homepod_mini
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: media-control
+            entity: media_player.samsung_monitor
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: custom:mushroom-entity-card
+            entity: remote.samsung_monitor_on_off
+            name: Monitor Power
+            icon: mdi:monitor
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: custom:mushroom-entity-card
+            entity: button.wake_on_lan_6c_70_cb_f0_15_b0
+            name: Wake PC (WOL)
+            icon: mdi:lan-connect
+            tap_action:
+              action: call-service
+              service: button.press
+              target:
+                entity_id: button.wake_on_lan_6c_70_cb_f0_15_b0
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Comfort
+
+          # Ceiling light: TAP -> more-info (full native controls), HOLD -> popup with settings
+          - type: custom:mushroom-light-card
+            entity: light.ceiling_light
+            name: Ceiling Light
+            icon: mdi:ceiling-light
+            show_brightness_control: true
+            show_color_temp_control: true
+            show_color_control: true
+            use_light_color: true
+            tap_action:
+              action: more-info
+            hold_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Ceiling Light Settings
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: light
+                      entity: light.ceiling_light
+                    - type: entities
+                      title: Settings
+                      entities:
+                        - number.ceiling_light_on_level
+                        - number.ceiling_light_on_transition_time
+                        - number.ceiling_light_off_transition_time
+                        - number.ceiling_light_on_off_transition_time
+                        - select.ceiling_light_power_on_behavior_on_startup
+                        - update.ceiling_light_firmware
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          # Air purifier: TAP -> more-info (restores full native controls like your older YAML),
+          # HOLD -> popup with extras + optional speed/preset tile features.
+          - type: custom:mushroom-fan-card
+            entity: fan.air_purifier
+            name: Air Purifier
+            icon: mdi:fan
+            show_percentage_control: true
+            show_oscillate_control: false
+            show_direction_control: false
+            tap_action:
+              action: more-info
+            hold_action:
+              action: fire-dom-event
+              browser_mod:
+                command: popup
+                title: Air Purifier Controls
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: tile
+                      entity: fan.air_purifier
+                      name: Purifier
+                      icon: mdi:air-purifier
+                      features:
+                        - type: fan-speed
+                        - type: fan-preset-modes
+
+                    - type: entities
+                      title: Device Toggles
+                      entities:
+                        - switch.air_purifier_display
+                        - switch.air_purifier_child_lock
+                        - update.air_purifier_firmware
+
+                    - type: entities
+                      title: Sensors
+                      entities:
+                        - sensor.air_purifier_air_quality
+                        - sensor.air_purifier_pm2_5
+                        - sensor.air_purifier_filter_lifetime
+
+                    - type: custom:mini-graph-card
+                      name: PM2.5 (24h)
+                      hours_to_show: 24
+                      points_per_hour: 2
+                      entities:
+                        - sensor.air_purifier_pm2_5
+                      show:
+                        icon: false
+                        labels: true
+                        legend: false
+                deviceID:
+                  - this
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+            icon_animation: true
+
+          - type: entities
+            title: Purifier Controls
+            entities:
+              - switch.air_purifier_display
+              - switch.air_purifier_child_lock
+              - update.air_purifier_firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: heading
+            heading: Ceiling Light Settings
+
+          - type: tile
+            entity: number.ceiling_light_on_level
+            name: On Level
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_on_transition_time
+            name: On Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_off_transition_time
+            name: Off Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: number.ceiling_light_on_off_transition_time
+            name: On/Off Transition
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: select.ceiling_light_power_on_behavior_on_startup
+            name: Power-on Behavior
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: tile
+            entity: update.ceiling_light_firmware
+            name: Ceiling Light Firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Echo & Notifications
+
+          - type: entities
+            title: Echo
+            entities:
+              - switch.echo_do_not_disturb
+              - binary_sensor.echo_connectivity
+              - binary_sensor.echo_motion
+              - sensor.echo_illuminance
+              - sensor.echo_next_alarm
+              - sensor.echo_next_timer
+              - sensor.echo_next_reminder
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: entities
+            title: Notify
+            entities:
+              - notify.echo_speak
+              - notify.echo_announce
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+  # =========================
+  # ENERGY (Apple Home-like)
+  # =========================
+  - type: sections
+    title: Energy
+    sub_title: kWh totals and consumption
+    path: energy
+    icon: mdi:lightning-bolt
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: kWh Totals
+
+          - type: entities
+            title: MainDesk
+            entities:
+              - sensor.maindesk_energy
+              - sensor.maindesk_consumption
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: entities
+            title: WorkStation
+            entities:
+              - sensor.workstation_energy
+              - sensor.workstation_consumption
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Power Trend (24h)
+
+          - type: custom:mini-graph-card
+            name: MainDesk Power
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - sensor.maindesk_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: custom:mini-graph-card
+            name: WorkStation Power
+            hours_to_show: 24
+            points_per_hour: 2
+            entities:
+              - sensor.workstation_power
+            show:
+              icon: false
+              labels: true
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+  # =========================
+  # SYSTEM (Apple Home-like)
+  # =========================
+  - type: sections
+    title: System
+    sub_title: Updates, backups, maintenance
+    path: system
+    icon: mdi:server
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Updates
+
+          - type: entities
+            title: Core
+            entities:
+              - update.home_assistant_core_update
+              - update.home_assistant_operating_system_update
+              - update.home_assistant_supervisor_update
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: entities
+            title: Add-ons
+            entities:
+              - update.hacs_update
+              - update.cloudflared_update
+              - update.matter_server_update
+              - update.meross_lan_update
+              - update.file_editor_update
+              - update.terminal_ssh_update
+              - update.custom_sidebar_update
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+          - type: entities
+            title: Misc Updates
+            entities:
+              - update.air_purifier_firmware
+              - update.ceiling_light_firmware
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Backups
+
+          - type: entities
+            entities:
+              - sensor.backup_backup_manager_state
+              - sensor.backup_last_attempted_automatic_backup
+              - sensor.backup_last_successful_automatic_backup
+              - sensor.backup_next_scheduled_automatic_backup
+            card_mod:
+              style: |
+                ha-card { border-radius: 18px; }

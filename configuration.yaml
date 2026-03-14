@@ -1,0 +1,24 @@
+# Stable, include-driven Home Assistant configuration.
+# Keep production-ready config in structured folders and keep drafts in experiments/.
+
+default_config:
+
+homeassistant:
+  packages: !include_dir_named packages
+
+automation: !include_dir_merge_list automations
+script: !include_dir_merge_named scripts
+scene: !include_dir_merge_list scenes
+template: !include_dir_merge_list templates
+
+input_boolean: !include_dir_merge_named helpers/input_boolean
+input_number: !include_dir_merge_named helpers/input_number
+input_select: !include_dir_merge_named helpers/input_select
+input_datetime: !include_dir_merge_named helpers/input_datetime
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+lovelace:
+  mode: yaml
+  dashboards: !include dashboards/dashboards.yaml
