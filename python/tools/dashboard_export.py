@@ -87,51 +87,6 @@ NOISY_OBJECT_SUBSTRINGS = [
     "_lqi",
 ]
 
-PRIMARY_VIEW_FILES = {
-    "home": REPO_ROOT / "dashboards" / "views" / "home.yaml",
-    "workspace": REPO_ROOT / "dashboards" / "rooms" / "workspace.yaml",
-    "lounge": REPO_ROOT / "dashboards" / "rooms" / "lounge.yaml",
-    "energy": REPO_ROOT / "dashboards" / "views" / "energy.yaml",
-    "system": REPO_ROOT / "dashboards" / "views" / "system.yaml",
-}
-
-WORKSPACE_HINTS = ("workspace", "workstation", "maindesk", "desk", "pc", "monitor")
-LOUNGE_HINTS = ("lounge", "tv", "echo", "homepod", "air_purifier", "ceiling_light", "sofa")
-ENERGY_HINTS = ("energy", "power", "consumption", "current", "voltage", "kwh")
-SYSTEM_HINTS = ("update", "firmware", "backup", "core", "supervisor", "hacs", "os")
-
-CONTROL_DOMAINS = {
-    "light",
-    "switch",
-    "fan",
-    "climate",
-    "cover",
-    "lock",
-    "button",
-    "media_player",
-    "remote",
-    "vacuum",
-    "input_boolean",
-    "input_select",
-    "input_number",
-    "input_datetime",
-    "number",
-    "select",
-}
-
-PROMOTE_ALWAYS_DOMAINS = CONTROL_DOMAINS.union(
-    {
-        "update",
-        "person",
-        "device_tracker",
-        "weather",
-        "sun",
-    }
-)
-
-PROMOTE_SENSOR_HINTS = WORKSPACE_HINTS + LOUNGE_HINTS + ENERGY_HINTS + SYSTEM_HINTS
-AUTO_SECTION_HEADING = "Auto Additions (Generated)"
-
 
 class ExportError(RuntimeError):
     """Raised when dashboard export inputs are invalid."""
@@ -390,43 +345,7 @@ def _load_live_states_from_file(path: Path) -> list[dict[str, Any]]:
 
     return normalized
 
-
-def _strip_generated_sections(dashboard_yaml: dict[str, Any]) -> dict[str, Any]:
-    sanitized = copy.deepcopy(dashboard_yaml)
-    views = sanitized.get("views")
-    if not isinstance(views, list):
-        return sanitized
-
-    for view in views:
-        if not isinstance(view, dict):
-            continue
-        sections = view.get("sections")
-        if not isinstance(sections, list):
-            continue
-
-        filtered_sections: list[dict[str, Any]] = []
-        for section in sections:
-            if not isinstance(section, dict):
-                continue
-            cards = section.get("cards")
-            heading = None
-            if isinstance(cards, list):
-                for card in cards:
-                    if isinstance(card, dict) and card.get("type") == "heading":
-                        candidate = card.get("heading")
-                        if isinstance(candidate, str):
-                            heading = candidate
-                        break
-            if heading == AUTO_SECTION_HEADING:
-                continue
-            filtered_sections.append(section)
-
-        view["sections"] = filtered_sections
-
-    return sanitized
-
-
-def _collect_curated_entities(registry: dict[str, Any], include_generated: bool = True) -> set[str]:
+def _collect_curated_entities(registry: dict[str, Any]) -> set[str]:
     curated_entities: set[str] = set()
     for dashboard_id, config in registry.items():
         if not isinstance(config, dict):
@@ -443,8 +362,6 @@ def _collect_curated_entities(registry: dict[str, Any], include_generated: bool 
             continue
         dashboard_yaml = _load_yaml(dashboard_file)
         if isinstance(dashboard_yaml, dict):
-            if not include_generated:
-                dashboard_yaml = _strip_generated_sections(dashboard_yaml)
             curated_entities.update(_extract_entity_ids(dashboard_yaml))
     return curated_entities
 
@@ -483,187 +400,6 @@ def _entities_card(domain: str, entities: list[str]) -> dict[str, Any]:
         "entities": entities,
         "card_mod": {"style": CARD_RADIUS_STYLE},
     }
-
-
-def _section_heading(section: dict[str, Any]) -> str | None:
-    cards = section.get("cards")
-    if not isinstance(cards, list):
-        return None
-    for card in cards:
-        if not isinstance(card, dict):
-            continue
-        if card.get("type") == "heading":
-            heading = card.get("heading")
-            if isinstance(heading, str):
-                return heading
-    return None
-
-
-def _collect_existing_promoted_entities() -> set[str]:
-    promoted: set[str] = set()
-    for view_file in PRIMARY_VIEW_FILES.values():
-        if not view_file.exists():
-            continue
-
-        payload = _load_yaml(view_file)
-        if not isinstance(payload, dict):
-            continue
-        views = payload.get("views")
-        if not isinstance(views, list):
-            continue
-
-        for view in views:
-            if not isinstance(view, dict):
-                continue
-            sections = view.get("sections")
-            if not isinstance(sections, list):
-                continue
-            for section in sections:
-                if not isinstance(section, dict):
-                    continue
-                if _section_heading(section) != AUTO_SECTION_HEADING:
-                    continue
-                promoted.update(_extract_entity_ids(section))
-
-    return promoted
-
-
-def _entity_search_text(entity_id: str, state_obj: dict[str, Any]) -> str:
-    parts = [entity_id]
-    attributes = state_obj.get("attributes")
-    if isinstance(attributes, dict):
-        for key in (
-            "friendly_name",
-            "name",
-            "device_class",
-            "entity_category",
-            "model",
-            "manufacturer",
-        ):
-            value = attributes.get(key)
-            if isinstance(value, str):
-                parts.append(value)
-    return " ".join(parts).lower()
-
-
-def _contains_hint(text: str, hints: tuple[str, ...]) -> bool:
-    return any(hint in text for hint in hints)
-
-
-def _should_promote_to_curated(entity_id: str, state_obj: dict[str, Any]) -> bool:
-    domain = entity_id.split(".", 1)[0]
-    if domain in PROMOTE_ALWAYS_DOMAINS:
-        return True
-
-    text = _entity_search_text(entity_id, state_obj)
-    if domain in {"sensor", "binary_sensor"}:
-        return _contains_hint(text, PROMOTE_SENSOR_HINTS)
-
-    return _contains_hint(text, WORKSPACE_HINTS) or _contains_hint(text, LOUNGE_HINTS)
-
-
-def _target_view_for_entity(entity_id: str, state_obj: dict[str, Any]) -> str:
-    domain = entity_id.split(".", 1)[0]
-    text = _entity_search_text(entity_id, state_obj)
-
-    if domain == "update":
-        return "system"
-    if _contains_hint(text, SYSTEM_HINTS):
-        return "system"
-    if _contains_hint(text, WORKSPACE_HINTS):
-        return "workspace"
-    if _contains_hint(text, LOUNGE_HINTS):
-        return "lounge"
-    if domain in CONTROL_DOMAINS:
-        return "home"
-    if _contains_hint(text, ENERGY_HINTS):
-        return "energy"
-    if domain in {"sensor", "binary_sensor"} and any(
-        token in text for token in ("energy", "power", "consumption", "voltage", "current", "kwh")
-    ):
-        return "energy"
-    return "home"
-
-
-def _plan_curated_promotions(
-    included_entities: list[str],
-    live_map: dict[str, dict[str, Any]],
-) -> dict[str, list[str]]:
-    planned: dict[str, set[str]] = {view_name: set() for view_name in PRIMARY_VIEW_FILES}
-
-    for entity_id in sorted(included_entities):
-        state_obj = live_map.get(entity_id, {})
-        if not _should_promote_to_curated(entity_id, state_obj):
-            continue
-        target = _target_view_for_entity(entity_id, state_obj)
-        if target not in planned:
-            target = "home"
-        planned[target].add(entity_id)
-
-    return {view_name: sorted(entities) for view_name, entities in planned.items() if entities}
-
-
-def _build_generated_section(entities: list[str]) -> dict[str, Any]:
-    domain_to_entities: dict[str, list[str]] = defaultdict(list)
-    for entity_id in sorted(set(entities)):
-        domain = entity_id.split(".", 1)[0]
-        domain_to_entities[domain].append(entity_id)
-
-    cards: list[dict[str, Any]] = [
-        {"type": "heading", "heading": AUTO_SECTION_HEADING},
-    ]
-    ordered = _ordered_domains(
-        domain_to_entities,
-        CONTROL_DOMAIN_ORDER + SENSOR_DOMAIN_ORDER + UPDATE_DOMAIN_ORDER,
-    )
-    for domain in ordered:
-        cards.append(_entities_card(domain, domain_to_entities[domain]))
-
-    return {"type": "grid", "cards": cards}
-
-
-def _upsert_curated_generated_sections(promotions: dict[str, list[str]]) -> dict[str, int]:
-    updated: dict[str, int] = {}
-    for view_name, view_file in PRIMARY_VIEW_FILES.items():
-        if not view_file.exists():
-            continue
-
-        payload = _load_yaml(view_file)
-        if not isinstance(payload, dict):
-            raise ExportError(f"Dashboard YAML must be a mapping: {_relative(view_file)}")
-
-        views = payload.get("views")
-        if not isinstance(views, list) or not views:
-            raise ExportError(f"Dashboard YAML must include at least one view: {_relative(view_file)}")
-
-        root_view = views[0]
-        if not isinstance(root_view, dict):
-            raise ExportError(f"Top-level view must be a mapping in {_relative(view_file)}")
-
-        original_payload = copy.deepcopy(payload)
-
-        sections = root_view.get("sections")
-        if not isinstance(sections, list):
-            sections = []
-
-        kept_sections: list[dict[str, Any]] = []
-        for section in sections:
-            if not isinstance(section, dict):
-                continue
-            if _section_heading(section) == AUTO_SECTION_HEADING:
-                continue
-            kept_sections.append(section)
-
-        promoted_entities = promotions.get(view_name, [])
-        if promoted_entities:
-            kept_sections.append(_build_generated_section(promoted_entities))
-
-        root_view["sections"] = kept_sections
-        if payload != original_payload:
-            _dump_yaml(view_file, payload)
-            updated[view_name] = len(promoted_entities)
-
-    return updated
 
 
 def _build_catalog_dashboard(
@@ -787,8 +523,6 @@ def _write_sync_report(
     counts: dict[str, int],
     included_entities: list[str],
     exclusions: dict[str, list[str]],
-    promotions: dict[str, list[str]],
-    catalog_only: bool,
 ) -> None:
     lines = [
         "# Live Entity Sync Report",
@@ -799,29 +533,16 @@ def _write_sync_report(
         f"- Snapshot: `{_relative(snapshot_path)}`",
         f"- Registry: `{_relative(registry_path)}`",
         f"- Catalog output: `{_relative(catalog_output)}`",
-        f"- Catalog-only mode: `{str(catalog_only).lower()}`",
+        "- Curated auto-generation: `disabled`",
         "",
         "## Counts",
         "",
         f"- Live entities: **{counts['live_total']}**",
-        f"- Curated entities (base): **{counts['curated_total']}**",
-        f"- Curated entities (including generated): **{counts['curated_total_with_generated']}**",
+        f"- Curated entities: **{counts['curated_total']}**",
         f"- Missing before exclusion: **{counts['missing_total']}**",
         f"- Added to catalog: **{counts['catalog_included']}**",
-        f"- Promoted to curated views: **{counts['promoted_total']}**",
         f"- Excluded noisy/internal: **{counts['excluded_total']}**",
-        "",
-        "## Curated Promotions by View",
-        "",
     ]
-
-    if promotions:
-        for view_name in ("home", "workspace", "lounge", "energy", "system"):
-            entities = promotions.get(view_name, [])
-            if entities:
-                lines.append(f"- `{view_name}`: {len(entities)}")
-    else:
-        lines.append("- none")
 
     lines.extend(
         [
@@ -912,10 +633,8 @@ def sync_live(args: argparse.Namespace) -> int:
             live_map[entity_id] = item
 
     live_entities = set(live_map)
-    curated_entities_all = _collect_curated_entities(registry_yaml, include_generated=True)
-    curated_entities_core = _collect_curated_entities(registry_yaml, include_generated=False)
-    existing_promoted_entities = _collect_existing_promoted_entities()
-    missing_entities = sorted(live_entities - curated_entities_core)
+    curated_entities = _collect_curated_entities(registry_yaml)
+    missing_entities = sorted(live_entities - curated_entities)
 
     included_entities: list[str] = []
     exclusions: dict[str, list[str]] = defaultdict(list)
@@ -929,30 +648,11 @@ def sync_live(args: argparse.Namespace) -> int:
             continue
         included_entities.append(entity_id)
 
-    promotion_candidates = set(included_entities)
-    for entity_id in existing_promoted_entities:
-        if entity_id not in live_map:
-            continue
-        if args.include_noisy:
-            promotion_candidates.add(entity_id)
-            continue
-        if _noisy_reason(entity_id, live_map.get(entity_id, {})) is None:
-            promotion_candidates.add(entity_id)
-
-    promotions = (
-        {}
-        if args.catalog_only
-        else _plan_curated_promotions(sorted(promotion_candidates), live_map)
-    )
-    promoted_total = sum(len(items) for items in promotions.values())
-
     counts = {
         "live_total": len(live_entities),
-        "curated_total": len(curated_entities_core),
-        "curated_total_with_generated": len(curated_entities_all),
+        "curated_total": len(curated_entities),
         "missing_total": len(missing_entities),
         "catalog_included": len(included_entities),
-        "promoted_total": promoted_total,
         "excluded_total": sum(len(v) for v in exclusions.values()),
     }
 
@@ -966,9 +666,6 @@ def sync_live(args: argparse.Namespace) -> int:
     _dump_json(snapshot_path, live_states)
     _dump_yaml(catalog_output, catalog_payload)
     _ensure_all_entities_registry_entry(registry_path, registry_yaml, catalog_output)
-    updated_views: dict[str, int] = {}
-    if not args.catalog_only:
-        updated_views = _upsert_curated_generated_sections(promotions)
     _write_sync_report(
         report_path=report_path,
         source=states_source,
@@ -978,17 +675,10 @@ def sync_live(args: argparse.Namespace) -> int:
         counts=counts,
         included_entities=included_entities,
         exclusions=exclusions,
-        promotions=promotions,
-        catalog_only=args.catalog_only,
     )
 
     print(f"Wrote live snapshot to {_relative(snapshot_path)}")
     print(f"Wrote catalog dashboard to {_relative(catalog_output)}")
-    if updated_views:
-        for view_name in ("home", "workspace", "lounge", "energy", "system"):
-            count = updated_views.get(view_name)
-            if count:
-                print(f"Updated {view_name} auto section with {count} entities")
     print(f"Wrote sync report to {_relative(report_path)}")
     print(json.dumps(counts, indent=2, sort_keys=True))
     return 0
@@ -1082,7 +772,7 @@ def build_parser() -> argparse.ArgumentParser:
     sync_parser.add_argument(
         "--catalog-only",
         action="store_true",
-        help="Update All Entities only; do not promote entities into curated view auto sections.",
+        help="Compatibility flag. Curated auto-generation is disabled and sync-live updates the catalog only.",
     )
     sync_parser.add_argument(
         "--dry-run",

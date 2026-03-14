@@ -347,395 +347,6 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
-    - type: entities
-      title: Light
-      entities:
-      - light.hex_panel_lights
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Switch
-      entities:
-      - switch.mic_enable_hex_panel_lights
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Button
-      entities:
-      - button.google_assistant_synchronize_devices
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Remote
-      entities:
-      - remote.power_on_off
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Number
-      entities:
-      - number.effect_speed_hex_panel_lights
-      - number.mic_sensitivity_hex_panel_lights
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Select
-      entities:
-      - select.brightness_mode_hex_panel_lights
-      - select.mic_effect_hex_panel_lights
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Device Tracker
-      entities:
-      - device_tracker.50765cb7_d9ea_4e21_99a4_fa879613a492_64256_31015_c1f0
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Sun
-      entities:
-      - sun.sun
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-- type: sections
-  title: Energy
-  sub_title: kWh totals and consumption
-  path: energy
-  icon: mdi:lightning-bolt
-  max_columns: 3
-  sections:
-  - type: grid
-    cards:
-    - type: heading
-      heading: kWh Totals
-    - type: entities
-      title: MainDesk
-      entities:
-      - sensor.maindesk_energy
-      - sensor.maindesk_consumption
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: entities
-      title: WorkStation
-      entities:
-      - sensor.workstation_energy
-      - sensor.workstation_consumption
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Power Trend (24h)
-    - type: custom:mini-graph-card
-      name: MainDesk Power
-      hours_to_show: 24
-      points_per_hour: 2
-      entities:
-      - sensor.maindesk_power
-      show:
-        icon: false
-        labels: true
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: custom:mini-graph-card
-      name: WorkStation Power
-      hours_to_show: 24
-      points_per_hour: 2
-      entities:
-      - sensor.workstation_power
-      show:
-        icon: false
-        labels: true
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-- type: sections
-  title: System
-  sub_title: Updates, backups, maintenance
-  path: system
-  icon: mdi:server
-  max_columns: 3
-  sections:
-  - type: grid
-    cards:
-    - type: heading
-      heading: Updates
-    - type: entities
-      title: Core
-      entities:
-      - update.home_assistant_core_update
-      - update.home_assistant_operating_system_update
-      - update.home_assistant_supervisor_update
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: entities
-      title: Add-ons
-      entities:
-      - update.hacs_update
-      - update.cloudflared_update
-      - update.matter_server_update
-      - update.meross_lan_update
-      - update.file_editor_update
-      - update.terminal_ssh_update
-      - update.custom_sidebar_update
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: entities
-      title: Misc Updates
-      entities:
-      - update.air_purifier_firmware
-      - update.ceiling_light_firmware
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Backups
-    - type: entities
-      entities:
-      - sensor.backup_backup_manager_state
-      - sensor.backup_last_attempted_automatic_backup
-      - sensor.backup_last_successful_automatic_backup
-      - sensor.backup_next_scheduled_automatic_backup
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
-    - type: entities
-      title: Sensor
-      entities:
-      - sensor.georges_ipad_pro_last_update_trigger
-      - sensor.georges_iphone_last_update_trigger
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Update
-      entities:
-      - update.browser_mod_update
-      - update.card_mod_update
-      - update.elkbledom_update
-      - update.kiosk_mode_update
-      - update.layout_card_update
-      - update.mini_graph_card_update
-      - update.mushroom_update
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-- type: sections
-  title: WorkSpace
-  sub_title: Plugs, power, and reliability
-  path: workspace
-  icon: mdi:desk
-  max_columns: 3
-  sections:
-  - type: grid
-    cards:
-    - type: heading
-      heading: Controls
-    - type: horizontal-stack
-      cards:
-      - type: custom:mushroom-entity-card
-        entity: switch.maindesk_outlet
-        name: MainDesk Outlet
-        icon: mdi:power-socket-eu
-        tap_action:
-          action: toggle
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-      - type: custom:mushroom-entity-card
-        entity: switch.workstation_outlet
-        name: WorkStation Outlet
-        icon: mdi:power-socket-eu
-        tap_action:
-          action: toggle
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-    - type: horizontal-stack
-      cards:
-      - type: custom:mushroom-entity-card
-        entity: switch.maindesk_config_overtemp_enable
-        name: MainDesk Overtemp
-        icon: mdi:thermometer-alert
-        tap_action:
-          action: toggle
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-      - type: custom:mushroom-entity-card
-        entity: switch.workstation_config_overtemp_enable
-        name: WorkStation Overtemp
-        icon: mdi:thermometer-alert
-        tap_action:
-          action: toggle
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-    - type: horizontal-stack
-      cards:
-      - type: custom:mushroom-entity-card
-        entity: button.maindesk_refresh
-        name: Refresh MainDesk
-        icon: mdi:refresh
-        tap_action:
-          action: call-service
-          service: button.press
-          target:
-            entity_id: button.maindesk_refresh
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-      - type: custom:mushroom-entity-card
-        entity: button.workstation_refresh
-        name: Refresh WorkStation
-        icon: mdi:refresh
-        tap_action:
-          action: call-service
-          service: button.press
-          target:
-            entity_id: button.workstation_refresh
-        card_mod:
-          style: 'ha-card { border-radius: 18px; }
-
-            '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Live Power
-    - type: entities
-      title: MainDesk (Live)
-      entities:
-      - sensor.maindesk_power
-      - sensor.maindesk_current
-      - sensor.maindesk_voltage
-      - sensor.maindesk_signal_strength
-      - sensor.maindesk_config_overtemp_type
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: entities
-      title: WorkStation (Live)
-      entities:
-      - sensor.workstation_power
-      - sensor.workstation_current
-      - sensor.workstation_voltage
-      - sensor.workstation_signal_strength
-      - sensor.workstation_config_overtemp_type
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-  - type: grid
-    cards:
-    - type: heading
-      heading: History (24h)
-    - type: custom:mini-graph-card
-      name: MainDesk Power (24h)
-      hours_to_show: 24
-      points_per_hour: 2
-      entities:
-      - sensor.maindesk_power
-      show:
-        icon: false
-        labels: true
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: custom:mini-graph-card
-      name: WorkStation Power (24h)
-      hours_to_show: 24
-      points_per_hour: 2
-      entities:
-      - sensor.workstation_power
-      show:
-        icon: false
-        labels: true
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-    - type: custom:mini-graph-card
-      name: Energy (kWh) (24h)
-      hours_to_show: 24
-      points_per_hour: 2
-      entities:
-      - entity: sensor.maindesk_energy
-        name: MainDesk
-      - entity: sensor.workstation_energy
-        name: WorkStation
-      show:
-        icon: false
-        labels: true
-        legend: true
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
-    - type: entities
-      title: Light
-      entities:
-      - light.maindesk_dnd
-      - light.workstation_dnd
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Switch
-      entities:
-      - switch.light_sensor_odyssey_oled_g9
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Button
-      entities:
-      - button.maindesk_reload
-      - button.workstation_reload
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Media Player
-      entities:
-      - media_player.odyssey_oled_g9
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Sensor
-      entities:
-      - sensor.light_sensor_odyssey_oled_g9_brightness_intensity
-      - sensor.light_sensor_odyssey_oled_g9_illuminance
-      - sensor.odyssey_oled_g9_tv_channel
-      - sensor.odyssey_oled_g9_tv_channel_name
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
 - type: sections
   title: Lounge
   sub_title: Media, light, comfort
@@ -782,6 +393,16 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: Bedroom TV
+      entities:
+      - media_player.bedroom_tv
+      - media_player.bedroom_tv_2
+      - media_player.bedroom_tv_3
+      - remote.bedroom_tv
+      - remote.power_on_off
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
   - type: grid
     cards:
     - type: heading
@@ -885,6 +506,18 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: TV Backlight
+      entities:
+      - light.tv_backlight
+      - switch.mic_enabletv_backlight
+      - number.effect_speed_tv_backlight
+      - number.mic_sensitivity_tv_backlight
+      - select.brightness_mode_tv_backlight
+      - select.mic_effect_tv_backlight
+      - button.ceiling_light_identify
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
     - type: heading
       heading: Ceiling Light Settings
     - type: tile
@@ -956,86 +589,346 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: Bedroom TV Voice
+      entities:
+      - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
+      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
+      - notify.george_s_2025_samsung_smart_tv_announce
+      - notify.george_s_2025_samsung_smart_tv_speak
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+- type: sections
+  title: WorkSpace
+  sub_title: Plugs, power, and reliability
+  path: workspace
+  icon: mdi:desk
+  max_columns: 3
+  sections:
   - type: grid
     cards:
     - type: heading
-      heading: Auto Additions (Generated)
+      heading: Controls
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: switch.maindesk_outlet
+        name: MainDesk Outlet
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: switch.workstation_outlet
+        name: WorkStation Outlet
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: switch.maindesk_config_overtemp_enable
+        name: MainDesk Overtemp
+        icon: mdi:thermometer-alert
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: switch.workstation_config_overtemp_enable
+        name: WorkStation Overtemp
+        icon: mdi:thermometer-alert
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: button.maindesk_refresh
+        name: Refresh MainDesk
+        icon: mdi:refresh
+        tap_action:
+          action: call-service
+          service: button.press
+          target:
+            entity_id: button.maindesk_refresh
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: button.workstation_refresh
+        name: Refresh WorkStation
+        icon: mdi:refresh
+        tap_action:
+          action: call-service
+          service: button.press
+          target:
+            entity_id: button.workstation_refresh
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
     - type: entities
-      title: Light
+      title: Ambient & Extra Controls
       entities:
-      - light.tv_backlight
+      - light.maindesk_dnd
+      - light.workstation_dnd
+      - light.hex_panel_lights
+      - switch.mic_enable_hex_panel_lights
+      - button.maindesk_reload
+      - button.workstation_reload
+      - number.effect_speed_hex_panel_lights
+      - number.mic_sensitivity_hex_panel_lights
+      - select.brightness_mode_hex_panel_lights
+      - select.mic_effect_hex_panel_lights
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
     - type: entities
-      title: Switch
+      title: Monitor
       entities:
-      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
-      - switch.light_sensor_bedroom_tv
-      - switch.mic_enabletv_backlight
+      - media_player.odyssey_oled_g9
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Live Power
     - type: entities
-      title: Button
+      title: MainDesk (Live)
       entities:
-      - button.ceiling_light_identify
+      - sensor.maindesk_power
+      - sensor.maindesk_current
+      - sensor.maindesk_voltage
+      - sensor.maindesk_signal_strength
+      - sensor.maindesk_config_overtemp_type
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
+        style: 'ha-card { border-radius: 18px; }
+
+          '
     - type: entities
-      title: Media Player
+      title: WorkStation (Live)
       entities:
-      - media_player.bedroom_tv
-      - media_player.bedroom_tv_2
-      - media_player.bedroom_tv_3
+      - sensor.workstation_power
+      - sensor.workstation_current
+      - sensor.workstation_voltage
+      - sensor.workstation_signal_strength
+      - sensor.workstation_config_overtemp_type
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Remote
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: History (24h)
+    - type: custom:mini-graph-card
+      name: MainDesk Power (24h)
+      hours_to_show: 24
+      points_per_hour: 2
       entities:
-      - remote.bedroom_tv
+      - sensor.maindesk_power
+      show:
+        icon: false
+        labels: true
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Number
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: WorkStation Power (24h)
+      hours_to_show: 24
+      points_per_hour: 2
       entities:
-      - number.effect_speed_tv_backlight
-      - number.mic_sensitivity_tv_backlight
+      - sensor.workstation_power
+      show:
+        icon: false
+        labels: true
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Select
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: Energy (kWh) (24h)
+      hours_to_show: 24
+      points_per_hour: 2
       entities:
-      - select.brightness_mode_tv_backlight
-      - select.mic_effect_tv_backlight
+      - entity: sensor.maindesk_energy
+        name: MainDesk
+      - entity: sensor.workstation_energy
+        name: WorkStation
+      show:
+        icon: false
+        labels: true
+        legend: true
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+- type: sections
+  title: Energy
+  sub_title: kWh totals and consumption
+  path: energy
+  icon: mdi:lightning-bolt
+  max_columns: 3
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: kWh Totals
     - type: entities
-      title: Binary Sensor
+      title: MainDesk
       entities:
-      - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
+      - sensor.maindesk_energy
+      - sensor.maindesk_consumption
       card_mod:
-        style: 'ha-card { border-radius: 18px; }'
+        style: 'ha-card { border-radius: 18px; }
+
+          '
     - type: entities
-      title: Sensor
+      title: WorkStation
       entities:
+      - sensor.workstation_energy
+      - sensor.workstation_consumption
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Bedroom TV
+      entities:
+      - sensor.bedroom_tv_power
+      - sensor.bedroom_tv_power_energy
       - sensor.bedroom_tv_energy
       - sensor.bedroom_tv_energy_difference
       - sensor.bedroom_tv_energy_saved
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Power Trend (24h)
+    - type: custom:mini-graph-card
+      name: MainDesk Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.maindesk_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: WorkStation Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.workstation_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: Bedroom TV Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
       - sensor.bedroom_tv_power
-      - sensor.bedroom_tv_power_energy
-      - sensor.bedroom_tv_tv_channel
-      - sensor.bedroom_tv_tv_channel_name
-      - sensor.george_s_2025_samsung_smart_tv_next_alarm
-      - sensor.george_s_2025_samsung_smart_tv_next_reminder
-      - sensor.george_s_2025_samsung_smart_tv_next_timer
-      - sensor.light_sensor_bedroom_tv_brightness_intensity
-      - sensor.light_sensor_bedroom_tv_illuminance
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+- type: sections
+  title: System
+  sub_title: Updates, backups, maintenance
+  path: system
+  icon: mdi:server
+  max_columns: 3
+  sections:
+  - type: grid
+    cards:
+    - type: heading
+      heading: Updates
+    - type: entities
+      title: Core
+      entities:
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Add-ons
+      entities:
+      - update.hacs_update
+      - update.cloudflared_update
+      - update.matter_server_update
+      - update.meross_lan_update
+      - update.file_editor_update
+      - update.terminal_ssh_update
+      - update.custom_sidebar_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Misc Updates
+      entities:
+      - update.air_purifier_firmware
+      - update.ceiling_light_firmware
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Frontend & Custom Cards
+      entities:
+      - update.browser_mod_update
+      - update.card_mod_update
+      - update.elkbledom_update
+      - update.kiosk_mode_update
+      - update.layout_card_update
+      - update.mini_graph_card_update
+      - update.mushroom_update
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
     - type: entities
-      title: Notify
+      title: Maintenance
       entities:
-      - notify.george_s_2025_samsung_smart_tv_announce
-      - notify.george_s_2025_samsung_smart_tv_speak
+      - button.google_assistant_synchronize_devices
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Backups
+    - type: entities
+      entities:
+      - sensor.backup_backup_manager_state
+      - sensor.backup_last_attempted_automatic_backup
+      - sensor.backup_last_successful_automatic_backup
+      - sensor.backup_next_scheduled_automatic_backup
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
 - type: sections
@@ -1050,14 +943,14 @@ views:
     - type: markdown
       content: '# All Entities Catalog
 
-        Generated: `2026-03-14T22:49:59Z`
+        Generated: `2026-03-14T23:57:20Z`
 
 
         Live total: **165**
 
-        Curated: **67**
+        Curated: **107**
 
-        Catalog included: **98**
+        Catalog included: **58**
 
         Excluded noisy/internal: **1**'
       card_mod:
@@ -1067,65 +960,10 @@ views:
     - type: heading
       heading: Controls
     - type: entities
-      title: Light
-      entities:
-      - light.hex_panel_lights
-      - light.maindesk_dnd
-      - light.tv_backlight
-      - light.workstation_dnd
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
       title: Switch
       entities:
-      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
       - switch.light_sensor_bedroom_tv
       - switch.light_sensor_odyssey_oled_g9
-      - switch.mic_enable_hex_panel_lights
-      - switch.mic_enabletv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Button
-      entities:
-      - button.ceiling_light_identify
-      - button.google_assistant_synchronize_devices
-      - button.maindesk_reload
-      - button.workstation_reload
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Media Player
-      entities:
-      - media_player.bedroom_tv
-      - media_player.bedroom_tv_2
-      - media_player.bedroom_tv_3
-      - media_player.odyssey_oled_g9
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Remote
-      entities:
-      - remote.bedroom_tv
-      - remote.power_on_off
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Number
-      entities:
-      - number.effect_speed_hex_panel_lights
-      - number.effect_speed_tv_backlight
-      - number.mic_sensitivity_hex_panel_lights
-      - number.mic_sensitivity_tv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Select
-      entities:
-      - select.brightness_mode_hex_panel_lights
-      - select.brightness_mode_tv_backlight
-      - select.mic_effect_hex_panel_lights
-      - select.mic_effect_tv_backlight
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
     - type: entities
@@ -1139,20 +977,9 @@ views:
     - type: heading
       heading: Sensors
     - type: entities
-      title: Binary Sensor
-      entities:
-      - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
       title: Sensor
       entities:
       - sensor.50765cb7_d9ea_4e21_99a4_fa879613a492_64256_31015_c1f0_estimated_distance
-      - sensor.bedroom_tv_energy
-      - sensor.bedroom_tv_energy_difference
-      - sensor.bedroom_tv_energy_saved
-      - sensor.bedroom_tv_power
-      - sensor.bedroom_tv_power_energy
       - sensor.bedroom_tv_tv_channel
       - sensor.bedroom_tv_tv_channel_name
       - sensor.george_s_2025_samsung_smart_tv_next_alarm
@@ -1203,22 +1030,6 @@ views:
   - type: grid
     cards:
     - type: heading
-      heading: Updates & Diagnostics
-    - type: entities
-      title: Update
-      entities:
-      - update.browser_mod_update
-      - update.card_mod_update
-      - update.elkbledom_update
-      - update.kiosk_mode_update
-      - update.layout_card_update
-      - update.mini_graph_card_update
-      - update.mushroom_update
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-  - type: grid
-    cards:
-    - type: heading
       heading: Other Entities
     - type: entities
       title: Ai Task
@@ -1237,13 +1048,6 @@ views:
       entities:
       - conversation.google_ai_conversation
       - conversation.home_assistant
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Notify
-      entities:
-      - notify.george_s_2025_samsung_smart_tv_announce
-      - notify.george_s_2025_samsung_smart_tv_speak
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
     - type: entities

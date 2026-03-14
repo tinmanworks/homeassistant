@@ -29,6 +29,16 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: Bedroom TV
+      entities:
+      - sensor.bedroom_tv_power
+      - sensor.bedroom_tv_power_energy
+      - sensor.bedroom_tv_energy
+      - sensor.bedroom_tv_energy_difference
+      - sensor.bedroom_tv_energy_saved
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
   - type: grid
     cards:
     - type: heading
@@ -59,3 +69,14 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: custom:mini-graph-card
+      name: Bedroom TV Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.bedroom_tv_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'

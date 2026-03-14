@@ -44,6 +44,24 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: Frontend & Custom Cards
+      entities:
+      - update.browser_mod_update
+      - update.card_mod_update
+      - update.elkbledom_update
+      - update.kiosk_mode_update
+      - update.layout_card_update
+      - update.mini_graph_card_update
+      - update.mushroom_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Maintenance
+      entities:
+      - button.google_assistant_synchronize_devices
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
   - type: grid
     cards:
     - type: heading
@@ -54,28 +72,5 @@ views:
       - sensor.backup_last_attempted_automatic_backup
       - sensor.backup_last_successful_automatic_backup
       - sensor.backup_next_scheduled_automatic_backup
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
-    - type: entities
-      title: Sensor
-      entities:
-      - sensor.georges_ipad_pro_last_update_trigger
-      - sensor.georges_iphone_last_update_trigger
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Update
-      entities:
-      - update.browser_mod_update
-      - update.card_mod_update
-      - update.elkbledom_update
-      - update.kiosk_mode_update
-      - update.layout_card_update
-      - update.mini_graph_card_update
-      - update.mushroom_update
       card_mod:
         style: 'ha-card { border-radius: 18px; }'

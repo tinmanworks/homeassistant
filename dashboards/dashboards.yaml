@@ -4,6 +4,18 @@ home_overview:
   icon: mdi:home
   show_in_sidebar: true
   filename: dashboards/views/home.yaml
+lounge_room:
+  mode: yaml
+  title: Lounge
+  icon: mdi:sofa
+  show_in_sidebar: true
+  filename: dashboards/rooms/lounge.yaml
+workspace_room:
+  mode: yaml
+  title: Workspace
+  icon: mdi:desk
+  show_in_sidebar: true
+  filename: dashboards/rooms/workspace.yaml
 energy_overview:
   mode: yaml
   title: Energy
@@ -16,18 +28,6 @@ system_overview:
   icon: mdi:server
   show_in_sidebar: true
   filename: dashboards/views/system.yaml
-workspace_room:
-  mode: yaml
-  title: Workspace
-  icon: mdi:desk
-  show_in_sidebar: true
-  filename: dashboards/rooms/workspace.yaml
-lounge_room:
-  mode: yaml
-  title: Lounge
-  icon: mdi:sofa
-  show_in_sidebar: true
-  filename: dashboards/rooms/lounge.yaml
 all_entities:
   mode: yaml
   title: All Entities
