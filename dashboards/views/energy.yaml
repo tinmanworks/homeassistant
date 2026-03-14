@@ -1,0 +1,10 @@
+title: Energy
+views:
+  - title: Energy
+    path: energy
+    icon: mdi:lightning-bolt
+    cards:
+      - type: markdown
+        content: |
+          # Energy Dashboard
+          Add validated energy sensors and trends here.

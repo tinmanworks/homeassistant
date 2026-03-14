@@ -1,0 +1,10 @@
+title: Workspace
+views:
+  - title: Workspace
+    path: workspace
+    icon: mdi:desk
+    cards:
+      - type: markdown
+        content: |
+          # Workspace
+          Room-specific controls and telemetry belong here.

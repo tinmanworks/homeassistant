@@ -1,0 +1,11 @@
+title: Home
+views:
+  - title: Home
+    path: home
+    icon: mdi:home
+    cards:
+      - type: markdown
+        content: |
+          # Home Dashboard
+          Production-safe starter dashboard.
+          Add validated cards incrementally via feature branches.

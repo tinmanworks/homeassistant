@@ -1,0 +1,10 @@
+title: Admin Updates
+views:
+  - title: Updates
+    path: admin-updates
+    icon: mdi:update
+    cards:
+      - type: markdown
+        content: |
+          # Updates
+          Track core, OS, supervisor, add-on, and integration updates.
