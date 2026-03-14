@@ -29,6 +29,24 @@ jobs:
           python - <<'PY'
           import pathlib
           import yaml
+
+
+          class HomeAssistantLoader(yaml.SafeLoader):
+              """Safe YAML loader that tolerates Home Assistant custom tags."""
+
+
+          def _ha_tag_constructor(loader, tag_suffix, node):
+              if isinstance(node, yaml.ScalarNode):
+                  return loader.construct_scalar(node)
+              if isinstance(node, yaml.SequenceNode):
+                  return loader.construct_sequence(node)
+              if isinstance(node, yaml.MappingNode):
+                  return loader.construct_mapping(node)
+              raise TypeError(f"Unsupported YAML node type: {type(node)!r}")
+
+
+          # Accept tags like !include, !include_dir_merge_list, !secret, etc.
+          HomeAssistantLoader.add_multi_constructor("!", _ha_tag_constructor)
           
           root = pathlib.Path('.')
           yaml_files = sorted(
@@ -39,7 +57,7 @@ jobs:
           for f in yaml_files:
               try:
                   text = f.read_text(encoding='utf-8')
-                  list(yaml.safe_load_all(text))
+                  list(yaml.load_all(text, Loader=HomeAssistantLoader))
               except Exception as e:
                   failed.append((str(f), str(e)))
           if failed:
