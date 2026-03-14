@@ -8,3 +8,18 @@ Production Lovelace dashboards are YAML-managed here.
 - `admin/` holds operational/admin dashboards.
 
 Draft or unvalidated dashboards belong in `experiments/drafts/dashboards/` until validated.
+
+## Raw YAML Export (Copy-Paste Friendly)
+
+Use canonical dashboard files in this directory as source, then generate one combined raw YAML:
+
+```bash
+python3 python/tools/dashboard_export.py generate --raw-export combined
+```
+
+Output:
+- `experiments/drafts/dashboards/raw/combined_dashboard.yaml`
+- `experiments/drafts/dashboards/raw/combined_dashboard_report.md`
+
+By default, only dashboards with `show_in_sidebar: true` are included.
+Use `--include-hidden` to include admin/hidden dashboards.
