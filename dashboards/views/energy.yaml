@@ -1,10 +1,61 @@
 title: Energy
 views:
-  - title: Energy
-    path: energy
-    icon: mdi:lightning-bolt
+- type: sections
+  title: Energy
+  sub_title: kWh totals and consumption
+  path: energy
+  icon: mdi:lightning-bolt
+  max_columns: 3
+  sections:
+  - type: grid
     cards:
-      - type: markdown
-        content: |
-          # Energy Dashboard
-          Add validated energy sensors and trends here.
+    - type: heading
+      heading: kWh Totals
+    - type: entities
+      title: MainDesk
+      entities:
+      - sensor.maindesk_energy
+      - sensor.maindesk_consumption
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: WorkStation
+      entities:
+      - sensor.workstation_energy
+      - sensor.workstation_consumption
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: Power Trend (24h)
+    - type: custom:mini-graph-card
+      name: MainDesk Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.maindesk_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: WorkStation Power
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.workstation_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '

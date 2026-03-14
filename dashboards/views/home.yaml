@@ -1,11 +1,349 @@
 title: Home
 views:
-  - title: Home
-    path: home
-    icon: mdi:home
+- type: sections
+  title: Home
+  sub_title: Mode + essentials + status
+  path: home
+  icon: mdi:home
+  max_columns: 3
+  sections:
+  - type: grid
     cards:
-      - type: markdown
-        content: |
-          # Home Dashboard
-          Production-safe starter dashboard.
-          Add validated cards incrementally via feature branches.
+    - type: heading
+      heading: Mode & Essentials
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-template-card
+        primary: Workspace
+        icon: mdi:desk
+        layout: horizontal
+        fill_container: true
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          target:
+            entity_id: input_select.room_mode
+          data:
+            option: WorkSpace
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-template-card
+        primary: Lounge
+        icon: mdi:sofa
+        layout: horizontal
+        fill_container: true
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          target:
+            entity_id: input_select.room_mode
+          data:
+            option: Lounge
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-template-card
+        primary: Sleep
+        icon: mdi:sleep
+        layout: horizontal
+        fill_container: true
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          target:
+            entity_id: input_select.room_mode
+          data:
+            option: Sleep
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-template-card
+        primary: Away
+        icon: mdi:exit-run
+        layout: horizontal
+        fill_container: true
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          target:
+            entity_id: input_select.room_mode
+          data:
+            option: Away
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: custom:mushroom-template-card
+      primary: Room Mode
+      secondary: '{{ states(''input_select.room_mode'') }}'
+      icon: mdi:home-variant
+      layout: horizontal
+      fill_container: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mushroom-light-card
+      entity: light.ceiling_light
+      name: Ceiling Light
+      icon: mdi:ceiling-light
+      show_brightness_control: true
+      show_color_temp_control: true
+      show_color_control: true
+      use_light_color: true
+      tap_action:
+        action: more-info
+      hold_action:
+        action: fire-dom-event
+        browser_mod:
+          command: popup
+          title: Ceiling Light
+          card:
+            type: vertical-stack
+            cards:
+            - type: light
+              entity: light.ceiling_light
+            - type: entities
+              title: Settings
+              entities:
+              - number.ceiling_light_on_level
+              - number.ceiling_light_on_transition_time
+              - number.ceiling_light_off_transition_time
+              - number.ceiling_light_on_off_transition_time
+              - select.ceiling_light_power_on_behavior_on_startup
+              - update.ceiling_light_firmware
+          deviceID:
+          - this
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mushroom-fan-card
+      entity: fan.air_purifier
+      name: Air Purifier
+      icon: mdi:fan
+      show_percentage_control: true
+      show_oscillate_control: false
+      show_direction_control: false
+      tap_action:
+        action: more-info
+      hold_action:
+        action: fire-dom-event
+        browser_mod:
+          command: popup
+          title: Air Purifier
+          card:
+            type: vertical-stack
+            cards:
+            - type: tile
+              entity: fan.air_purifier
+              name: Purifier
+              icon: mdi:air-purifier
+              icon_animation: true
+              features:
+              - type: fan-speed
+              - type: fan-preset-modes
+            - type: entities
+              title: Device Toggles
+              entities:
+              - switch.air_purifier_display
+              - switch.air_purifier_child_lock
+              - update.air_purifier_firmware
+            - type: entities
+              title: Sensors
+              entities:
+              - sensor.air_purifier_air_quality
+              - sensor.air_purifier_pm2_5
+              - sensor.air_purifier_filter_lifetime
+            - type: custom:mini-graph-card
+              name: PM2.5 (24h)
+              hours_to_show: 24
+              points_per_hour: 2
+              entities:
+              - sensor.air_purifier_pm2_5
+              show:
+                icon: false
+                labels: true
+                legend: false
+          deviceID:
+          - this
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+      icon_animation: true
+    - type: custom:mushroom-entity-card
+      entity: remote.samsung_monitor_on_off
+      name: Monitor Power
+      icon: mdi:monitor
+      tap_action:
+        action: more-info
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: switch.maindesk_outlet
+        name: MainDesk Power
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: switch.workstation_outlet
+        name: WorkStation Power
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: custom:mini-graph-card
+      name: Desk Power (24h)
+      hours_to_show: 24
+      points_per_hour: 2
+      line_width: 2
+      entities:
+      - entity: sensor.maindesk_power
+        name: MainDesk
+      - entity: sensor.workstation_power
+        name: WorkStation
+      show:
+        labels: true
+        legend: true
+        icon: false
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: Presence & Sensors
+    - type: grid
+      columns: 2
+      square: false
+      cards:
+      - type: custom:mushroom-person-card
+        entity: person.george_gil
+        layout: horizontal
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: device_tracker.georges_iphone
+        name: iPhone 14 Pro
+        icon: mdi:cellphone
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: device_tracker.georges_ipad_pro
+        name: iPad Pro 12.9 inch 6th Gen
+        icon: mdi:tablet
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: device_tracker.zfold7
+        name: Galaxy Z Fold 7
+        icon: mdi:cellphone
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: entities
+      title: Lounge Sensors (Echo)
+      entities:
+      - binary_sensor.echo_connectivity
+      - binary_sensor.echo_motion
+      - sensor.echo_illuminance
+      - sensor.echo_next_alarm
+      - sensor.echo_next_timer
+      - sensor.echo_next_reminder
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: Air & Weather
+    - type: weather-forecast
+      entity: weather.forecast_home
+      name: Forecast
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: vertical-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: sensor.air_purifier_air_quality
+        name: Air Quality
+        icon: mdi:blur
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: sensor.air_purifier_pm2_5
+        name: PM2.5
+        icon: mdi:molecule
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: sensor.air_purifier_filter_lifetime
+        name: Filter Lifetime
+        icon: mdi:air-filter
+        layout: horizontal
+        tap_action:
+          action: more-info
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: custom:mini-graph-card
+      name: PM2.5 Trend (24h)
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.air_purifier_pm2_5
+      show:
+        icon: false
+        labels: true
+        legend: false
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '

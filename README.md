@@ -40,6 +40,16 @@ See `docs/branch-strategy.md` and `docs/migration-plan.md`.
 Canonical dashboard source stays file-based in this repo, but you can generate a single copy-paste payload for Home Assistant's raw YAML editor:
 
 ```bash
+export HA_URL=\"http://homeassistant.local:8123\"
+export HA_TOKEN=\"<LONG_LIVED_TOKEN>\"
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
+```
+
+This sync updates `dashboards/views/all_entities.yaml` with missing live entities not already in curated views.
+
+Then regenerate combined copy-paste YAML:
+
+```bash
 python3 python/tools/dashboard_export.py generate --raw-export combined
 ```
 

@@ -1,10 +1,160 @@
-title: Workspace
+title: WorkSpace
 views:
-  - title: Workspace
-    path: workspace
-    icon: mdi:desk
+- type: sections
+  title: WorkSpace
+  sub_title: Plugs, power, and reliability
+  path: workspace
+  icon: mdi:desk
+  max_columns: 3
+  sections:
+  - type: grid
     cards:
-      - type: markdown
-        content: |
-          # Workspace
-          Room-specific controls and telemetry belong here.
+    - type: heading
+      heading: Controls
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: switch.maindesk_outlet
+        name: MainDesk Outlet
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: switch.workstation_outlet
+        name: WorkStation Outlet
+        icon: mdi:power-socket-eu
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: switch.maindesk_config_overtemp_enable
+        name: MainDesk Overtemp
+        icon: mdi:thermometer-alert
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: switch.workstation_config_overtemp_enable
+        name: WorkStation Overtemp
+        icon: mdi:thermometer-alert
+        tap_action:
+          action: toggle
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+    - type: horizontal-stack
+      cards:
+      - type: custom:mushroom-entity-card
+        entity: button.maindesk_refresh
+        name: Refresh MainDesk
+        icon: mdi:refresh
+        tap_action:
+          action: call-service
+          service: button.press
+          target:
+            entity_id: button.maindesk_refresh
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+      - type: custom:mushroom-entity-card
+        entity: button.workstation_refresh
+        name: Refresh WorkStation
+        icon: mdi:refresh
+        tap_action:
+          action: call-service
+          service: button.press
+          target:
+            entity_id: button.workstation_refresh
+        card_mod:
+          style: 'ha-card { border-radius: 18px; }
+
+            '
+  - type: grid
+    cards:
+    - type: heading
+      heading: Live Power
+    - type: entities
+      title: MainDesk (Live)
+      entities:
+      - sensor.maindesk_power
+      - sensor.maindesk_current
+      - sensor.maindesk_voltage
+      - sensor.maindesk_signal_strength
+      - sensor.maindesk_config_overtemp_type
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: WorkStation (Live)
+      entities:
+      - sensor.workstation_power
+      - sensor.workstation_current
+      - sensor.workstation_voltage
+      - sensor.workstation_signal_strength
+      - sensor.workstation_config_overtemp_type
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: History (24h)
+    - type: custom:mini-graph-card
+      name: MainDesk Power (24h)
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.maindesk_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: WorkStation Power (24h)
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - sensor.workstation_power
+      show:
+        icon: false
+        labels: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: custom:mini-graph-card
+      name: Energy (kWh) (24h)
+      hours_to_show: 24
+      points_per_hour: 2
+      entities:
+      - entity: sensor.maindesk_energy
+        name: MainDesk
+      - entity: sensor.workstation_energy
+        name: WorkStation
+      show:
+        icon: false
+        labels: true
+        legend: true
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '

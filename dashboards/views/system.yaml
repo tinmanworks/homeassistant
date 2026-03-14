@@ -1,10 +1,58 @@
 title: System
 views:
-  - title: System
-    path: system
-    icon: mdi:server
+- type: sections
+  title: System
+  sub_title: Updates, backups, maintenance
+  path: system
+  icon: mdi:server
+  max_columns: 3
+  sections:
+  - type: grid
     cards:
-      - type: markdown
-        content: |
-          # System Dashboard
-          Add update, backup, and health entities here.
+    - type: heading
+      heading: Updates
+    - type: entities
+      title: Core
+      entities:
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Add-ons
+      entities:
+      - update.hacs_update
+      - update.cloudflared_update
+      - update.matter_server_update
+      - update.meross_lan_update
+      - update.file_editor_update
+      - update.terminal_ssh_update
+      - update.custom_sidebar_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+    - type: entities
+      title: Misc Updates
+      entities:
+      - update.air_purifier_firmware
+      - update.ceiling_light_firmware
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }
+
+          '
+  - type: grid
+    cards:
+    - type: heading
+      heading: Backups
+    - type: entities
+      entities:
+      - sensor.backup_backup_manager_state
+      - sensor.backup_last_attempted_automatic_backup
+      - sensor.backup_last_successful_automatic_backup
+      - sensor.backup_next_scheduled_automatic_backup
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'

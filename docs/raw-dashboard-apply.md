@@ -7,6 +7,12 @@ This guide is for using a copy-paste workflow with Home Assistant's raw YAML edi
 From repo root:
 
 ```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
+```
+
+Then generate combined raw output:
+
+```bash
 python3 python/tools/dashboard_export.py generate --raw-export combined
 ```
 
