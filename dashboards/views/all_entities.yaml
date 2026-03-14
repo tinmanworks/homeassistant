@@ -1,22 +1,235 @@
 title: All Entities
 views:
-  - type: sections
-    title: All Entities
-    sub_title: Complete live entity catalog
-    path: all-entities
-    icon: mdi:format-list-bulleted
-    max_columns: 3
-    sections:
-      - type: grid
-        cards:
-          - type: markdown
-            content: |
-              # All Entities Catalog
-              Run the live sync command to populate this view from your current Home Assistant entities.
+- type: sections
+  title: All Entities
+  sub_title: Complete live entity catalog
+  path: all-entities
+  icon: mdi:format-list-bulleted
+  max_columns: 3
+  sections:
+  - type: grid
+    cards:
+    - type: markdown
+      content: '# All Entities Catalog
 
-              ```bash
-              python3 python/tools/dashboard_export.py sync-live --ha-url "$HA_URL" --ha-token "$HA_TOKEN"
-              ```
-            card_mod:
-              style: |
-                ha-card { border-radius: 18px; }
+        Generated: `2026-03-14T22:49:59Z`
+
+
+        Live total: **165**
+
+        Curated: **67**
+
+        Catalog included: **98**
+
+        Excluded noisy/internal: **1**'
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Controls
+    - type: entities
+      title: Light
+      entities:
+      - light.hex_panel_lights
+      - light.maindesk_dnd
+      - light.tv_backlight
+      - light.workstation_dnd
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Switch
+      entities:
+      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
+      - switch.light_sensor_bedroom_tv
+      - switch.light_sensor_odyssey_oled_g9
+      - switch.mic_enable_hex_panel_lights
+      - switch.mic_enabletv_backlight
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Button
+      entities:
+      - button.ceiling_light_identify
+      - button.google_assistant_synchronize_devices
+      - button.maindesk_reload
+      - button.workstation_reload
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Media Player
+      entities:
+      - media_player.bedroom_tv
+      - media_player.bedroom_tv_2
+      - media_player.bedroom_tv_3
+      - media_player.odyssey_oled_g9
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Remote
+      entities:
+      - remote.bedroom_tv
+      - remote.power_on_off
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Number
+      entities:
+      - number.effect_speed_hex_panel_lights
+      - number.effect_speed_tv_backlight
+      - number.mic_sensitivity_hex_panel_lights
+      - number.mic_sensitivity_tv_backlight
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Select
+      entities:
+      - select.brightness_mode_hex_panel_lights
+      - select.brightness_mode_tv_backlight
+      - select.mic_effect_hex_panel_lights
+      - select.mic_effect_tv_backlight
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Device Tracker
+      entities:
+      - device_tracker.50765cb7_d9ea_4e21_99a4_fa879613a492_64256_31015_c1f0
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Sensors
+    - type: entities
+      title: Binary Sensor
+      entities:
+      - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Sensor
+      entities:
+      - sensor.50765cb7_d9ea_4e21_99a4_fa879613a492_64256_31015_c1f0_estimated_distance
+      - sensor.bedroom_tv_energy
+      - sensor.bedroom_tv_energy_difference
+      - sensor.bedroom_tv_energy_saved
+      - sensor.bedroom_tv_power
+      - sensor.bedroom_tv_power_energy
+      - sensor.bedroom_tv_tv_channel
+      - sensor.bedroom_tv_tv_channel_name
+      - sensor.george_s_2025_samsung_smart_tv_next_alarm
+      - sensor.george_s_2025_samsung_smart_tv_next_reminder
+      - sensor.george_s_2025_samsung_smart_tv_next_timer
+      - sensor.georges_ipad_pro_app_version
+      - sensor.georges_ipad_pro_audio_output
+      - sensor.georges_ipad_pro_battery_level
+      - sensor.georges_ipad_pro_battery_state
+      - sensor.georges_ipad_pro_bssid
+      - sensor.georges_ipad_pro_connection_type
+      - sensor.georges_ipad_pro_geocoded_location
+      - sensor.georges_ipad_pro_last_update_trigger
+      - sensor.georges_ipad_pro_location_permission
+      - sensor.georges_ipad_pro_sim_1
+      - sensor.georges_ipad_pro_ssid
+      - sensor.georges_ipad_pro_storage
+      - sensor.georges_iphone_app_version
+      - sensor.georges_iphone_audio_output
+      - sensor.georges_iphone_battery_level
+      - sensor.georges_iphone_battery_state
+      - sensor.georges_iphone_bssid
+      - sensor.georges_iphone_connection_type
+      - sensor.georges_iphone_geocoded_location
+      - sensor.georges_iphone_last_update_trigger
+      - sensor.georges_iphone_location_permission
+      - sensor.georges_iphone_sim_1
+      - sensor.georges_iphone_sim_2
+      - sensor.georges_iphone_ssid
+      - sensor.georges_iphone_storage
+      - sensor.light_sensor_bedroom_tv_brightness_intensity
+      - sensor.light_sensor_bedroom_tv_illuminance
+      - sensor.light_sensor_odyssey_oled_g9_brightness_intensity
+      - sensor.light_sensor_odyssey_oled_g9_illuminance
+      - sensor.odyssey_oled_g9_tv_channel
+      - sensor.odyssey_oled_g9_tv_channel_name
+      - sensor.sun_next_dawn
+      - sensor.sun_next_dusk
+      - sensor.sun_next_midnight
+      - sensor.sun_next_noon
+      - sensor.sun_next_rising
+      - sensor.sun_next_setting
+      - sensor.zfold7_battery_level
+      - sensor.zfold7_battery_state
+      - sensor.zfold7_charger_type
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Updates & Diagnostics
+    - type: entities
+      title: Update
+      entities:
+      - update.browser_mod_update
+      - update.card_mod_update
+      - update.elkbledom_update
+      - update.kiosk_mode_update
+      - update.layout_card_update
+      - update.mini_graph_card_update
+      - update.mushroom_update
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+  - type: grid
+    cards:
+    - type: heading
+      heading: Other Entities
+    - type: entities
+      title: Ai Task
+      entities:
+      - ai_task.google_ai_task
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Automation
+      entities:
+      - automation.room_mode_controller
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Conversation
+      entities:
+      - conversation.google_ai_conversation
+      - conversation.home_assistant
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Notify
+      entities:
+      - notify.george_s_2025_samsung_smart_tv_announce
+      - notify.george_s_2025_samsung_smart_tv_speak
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Stt
+      entities:
+      - stt.google_ai_stt
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Sun
+      entities:
+      - sun.sun
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Tts
+      entities:
+      - tts.google_ai_tts
+      - tts.google_translate_en_com
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Zone
+      entities:
+      - zone.home
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'

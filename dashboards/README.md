@@ -17,7 +17,14 @@ Populate/update `views/all_entities.yaml` from live Home Assistant entities:
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
 ```
 
-This command computes missing entities (`live - curated`) and places them in the visible All Entities catalog view.
+This command computes missing entities (`live - curated`), updates `views/all_entities.yaml`,
+and updates generated `Auto Additions (Generated)` sections in primary curated dashboards.
+
+Catalog-only mode (skip curated auto sections):
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only
+```
 
 ## Raw YAML Export (Copy-Paste Friendly)
 

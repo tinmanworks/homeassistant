@@ -13,6 +13,18 @@ Sync current Home Assistant entities and refresh the All Entities catalog:
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
 ```
 
+Catalog-only mode (no curated auto-section updates):
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only
+```
+
+Offline mode from a saved states payload:
+
+```bash
+python3 python/tools/dashboard_export.py sync-live --states-file experiments/drafts/dashboards/live/live_states_snapshot.json
+```
+
 Dry run (no file writes):
 
 ```bash
