@@ -9,3 +9,4 @@ Repository governance and operational playbooks.
 - `naming-conventions.md`
 
 - `dashboard-promotion-plan.md`
+- `raw-dashboard-apply.md`

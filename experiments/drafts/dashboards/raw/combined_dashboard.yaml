@@ -1,0 +1,54 @@
+title: Combined Dashboard
+views:
+- title: Home
+  path: home
+  icon: mdi:home
+  cards:
+  - type: markdown
+    content: '# Home Dashboard
+
+      Production-safe starter dashboard.
+
+      Add validated cards incrementally via feature branches.
+
+      '
+- title: Energy
+  path: energy
+  icon: mdi:lightning-bolt
+  cards:
+  - type: markdown
+    content: '# Energy Dashboard
+
+      Add validated energy sensors and trends here.
+
+      '
+- title: System
+  path: system
+  icon: mdi:server
+  cards:
+  - type: markdown
+    content: '# System Dashboard
+
+      Add update, backup, and health entities here.
+
+      '
+- title: Workspace
+  path: workspace
+  icon: mdi:desk
+  cards:
+  - type: markdown
+    content: '# Workspace
+
+      Room-specific controls and telemetry belong here.
+
+      '
+- title: Lounge
+  path: lounge
+  icon: mdi:sofa
+  cards:
+  - type: markdown
+    content: '# Lounge
+
+      Room-specific controls and telemetry belong here.
+
+      '

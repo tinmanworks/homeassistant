@@ -35,6 +35,22 @@ See `docs/branch-strategy.md` and `docs/migration-plan.md`.
    - Use a non-stable HA instance for runtime testing.
 4. Open PR to `master` after checks pass.
 
+## Raw YAML Editor Workflow
+
+Canonical dashboard source stays file-based in this repo, but you can generate a single copy-paste payload for Home Assistant's raw YAML editor:
+
+```bash
+python3 python/tools/dashboard_export.py generate --raw-export combined
+```
+
+Optional (include hidden/admin dashboards):
+
+```bash
+python3 python/tools/dashboard_export.py generate --raw-export combined --include-hidden
+```
+
+See `docs/raw-dashboard-apply.md` for apply steps.
+
 ## Repository Layout
 
 - `dashboards/`: YAML-managed production dashboards and view files.
