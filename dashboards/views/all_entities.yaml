@@ -12,12 +12,12 @@ views:
     - type: markdown
       content: '# All Entities Catalog
 
-        Generated: `2026-03-14T23:57:20Z`
+        Generated: `2026-03-15T10:01:12Z`
 
 
-        Live total: **165**
+        Live total: **164**
 
-        Curated: **107**
+        Curated: **105**
 
         Catalog included: **58**
 
@@ -32,7 +32,13 @@ views:
       title: Switch
       entities:
       - switch.light_sensor_bedroom_tv
-      - switch.light_sensor_odyssey_oled_g9
+      - switch.light_sensor_samsung_monitor
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Media Player
+      entities:
+      - media_player.samsung_monitor_2
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
     - type: entities
@@ -51,16 +57,12 @@ views:
       - sensor.50765cb7_d9ea_4e21_99a4_fa879613a492_64256_31015_c1f0_estimated_distance
       - sensor.bedroom_tv_tv_channel
       - sensor.bedroom_tv_tv_channel_name
-      - sensor.george_s_2025_samsung_smart_tv_next_alarm
-      - sensor.george_s_2025_samsung_smart_tv_next_reminder
-      - sensor.george_s_2025_samsung_smart_tv_next_timer
       - sensor.georges_ipad_pro_app_version
       - sensor.georges_ipad_pro_audio_output
       - sensor.georges_ipad_pro_battery_level
       - sensor.georges_ipad_pro_battery_state
       - sensor.georges_ipad_pro_bssid
       - sensor.georges_ipad_pro_connection_type
-      - sensor.georges_ipad_pro_geocoded_location
       - sensor.georges_ipad_pro_last_update_trigger
       - sensor.georges_ipad_pro_location_permission
       - sensor.georges_ipad_pro_sim_1
@@ -81,10 +83,13 @@ views:
       - sensor.georges_iphone_storage
       - sensor.light_sensor_bedroom_tv_brightness_intensity
       - sensor.light_sensor_bedroom_tv_illuminance
-      - sensor.light_sensor_odyssey_oled_g9_brightness_intensity
-      - sensor.light_sensor_odyssey_oled_g9_illuminance
-      - sensor.odyssey_oled_g9_tv_channel
-      - sensor.odyssey_oled_g9_tv_channel_name
+      - sensor.light_sensor_samsung_monitor_brightness_intensity
+      - sensor.light_sensor_samsung_monitor_illuminance
+      - sensor.samsung_monitor_tv_channel
+      - sensor.samsung_monitor_tv_channel_name
+      - sensor.samsung_smart_tv_next_alarm
+      - sensor.samsung_smart_tv_next_reminder
+      - sensor.samsung_smart_tv_next_timer
       - sensor.sun_next_dawn
       - sensor.sun_next_dusk
       - sensor.sun_next_midnight

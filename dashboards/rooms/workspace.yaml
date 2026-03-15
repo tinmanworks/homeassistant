@@ -101,7 +101,7 @@ views:
     - type: entities
       title: Monitor
       entities:
-      - media_player.odyssey_oled_g9
+      - media_player.samsung_monitor
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
   - type: grid
