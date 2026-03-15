@@ -27,6 +27,8 @@ tts/
 www/community/
 backup/
 backups/
+experiments/drafts/dashboards/live/live_states_snapshot.json
+experiments/drafts/dashboards/live/sync_live_report.md
 *.db
 *.sqlite
 *.sqlite3
