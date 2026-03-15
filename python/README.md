@@ -13,7 +13,7 @@ Sync current Home Assistant entities and refresh the All Entities catalog:
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\"
 ```
 
-Catalog-only mode (no curated auto-section updates):
+Compatibility mode (`sync-live` is catalog-only by default):
 
 ```bash
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only

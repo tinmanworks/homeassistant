@@ -47,9 +47,9 @@ python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-tok
 
 Default `sync-live` behavior:
 - updates `dashboards/views/all_entities.yaml` with missing live entities not already in curated views
-- updates generated `Auto Additions (Generated)` sections in primary curated dashboards (`home/workspace/lounge/energy/system`)
+- leaves curated dashboards untouched; production views are manually curated
 
-If you only want the catalog update (no curated auto sections):
+`--catalog-only` is still accepted for compatibility, but it now matches the default behavior:
 
 ```bash
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only

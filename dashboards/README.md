@@ -18,9 +18,9 @@ python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-tok
 ```
 
 This command computes missing entities (`live - curated`), updates `views/all_entities.yaml`,
-and updates generated `Auto Additions (Generated)` sections in primary curated dashboards.
+and leaves curated dashboards unchanged.
 
-Catalog-only mode (skip curated auto sections):
+Compatibility mode:
 
 ```bash
 python3 python/tools/dashboard_export.py sync-live --ha-url \"$HA_URL\" --ha-token \"$HA_TOKEN\" --catalog-only

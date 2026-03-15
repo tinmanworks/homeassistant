@@ -83,6 +83,27 @@ views:
           style: 'ha-card { border-radius: 18px; }
 
             '
+    - type: entities
+      title: Ambient & Extra Controls
+      entities:
+      - light.maindesk_dnd
+      - light.workstation_dnd
+      - light.hex_panel_lights
+      - switch.mic_enable_hex_panel_lights
+      - button.maindesk_reload
+      - button.workstation_reload
+      - number.effect_speed_hex_panel_lights
+      - number.mic_sensitivity_hex_panel_lights
+      - select.brightness_mode_hex_panel_lights
+      - select.mic_effect_hex_panel_lights
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
+    - type: entities
+      title: Monitor
+      entities:
+      - media_player.odyssey_oled_g9
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
   - type: grid
     cards:
     - type: heading
@@ -158,42 +179,3 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
-    - type: entities
-      title: Light
-      entities:
-      - light.maindesk_dnd
-      - light.workstation_dnd
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Switch
-      entities:
-      - switch.light_sensor_odyssey_oled_g9
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Button
-      entities:
-      - button.maindesk_reload
-      - button.workstation_reload
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Media Player
-      entities:
-      - media_player.odyssey_oled_g9
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Sensor
-      entities:
-      - sensor.light_sensor_odyssey_oled_g9_brightness_intensity
-      - sensor.light_sensor_odyssey_oled_g9_illuminance
-      - sensor.odyssey_oled_g9_tv_channel
-      - sensor.odyssey_oled_g9_tv_channel_name
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'

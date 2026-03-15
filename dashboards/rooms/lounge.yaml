@@ -46,6 +46,16 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: Bedroom TV
+      entities:
+      - media_player.bedroom_tv
+      - media_player.bedroom_tv_2
+      - media_player.bedroom_tv_3
+      - remote.bedroom_tv
+      - remote.power_on_off
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
   - type: grid
     cards:
     - type: heading
@@ -149,6 +159,18 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
+    - type: entities
+      title: TV Backlight
+      entities:
+      - light.tv_backlight
+      - switch.mic_enabletv_backlight
+      - number.effect_speed_tv_backlight
+      - number.mic_sensitivity_tv_backlight
+      - select.brightness_mode_tv_backlight
+      - select.mic_effect_tv_backlight
+      - button.ceiling_light_identify
+      card_mod:
+        style: 'ha-card { border-radius: 18px; }'
     - type: heading
       heading: Ceiling Light Settings
     - type: tile
@@ -220,84 +242,11 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
-  - type: grid
-    cards:
-    - type: heading
-      heading: Auto Additions (Generated)
     - type: entities
-      title: Light
-      entities:
-      - light.tv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Switch
-      entities:
-      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
-      - switch.light_sensor_bedroom_tv
-      - switch.mic_enabletv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Button
-      entities:
-      - button.ceiling_light_identify
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Media Player
-      entities:
-      - media_player.bedroom_tv
-      - media_player.bedroom_tv_2
-      - media_player.bedroom_tv_3
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Remote
-      entities:
-      - remote.bedroom_tv
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Number
-      entities:
-      - number.effect_speed_tv_backlight
-      - number.mic_sensitivity_tv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Select
-      entities:
-      - select.brightness_mode_tv_backlight
-      - select.mic_effect_tv_backlight
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Binary Sensor
+      title: Bedroom TV Voice
       entities:
       - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Sensor
-      entities:
-      - sensor.bedroom_tv_energy
-      - sensor.bedroom_tv_energy_difference
-      - sensor.bedroom_tv_energy_saved
-      - sensor.bedroom_tv_power
-      - sensor.bedroom_tv_power_energy
-      - sensor.bedroom_tv_tv_channel
-      - sensor.bedroom_tv_tv_channel_name
-      - sensor.george_s_2025_samsung_smart_tv_next_alarm
-      - sensor.george_s_2025_samsung_smart_tv_next_reminder
-      - sensor.george_s_2025_samsung_smart_tv_next_timer
-      - sensor.light_sensor_bedroom_tv_brightness_intensity
-      - sensor.light_sensor_bedroom_tv_illuminance
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }'
-    - type: entities
-      title: Notify
-      entities:
+      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
       - notify.george_s_2025_samsung_smart_tv_announce
       - notify.george_s_2025_samsung_smart_tv_speak
       card_mod:
