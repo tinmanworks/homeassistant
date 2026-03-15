@@ -33,19 +33,6 @@ views:
         style: 'ha-card { border-radius: 18px; }
 
           '
-    - type: custom:mushroom-entity-card
-      entity: button.wake_on_lan_6c_70_cb_f0_15_b0
-      name: Wake PC (WOL)
-      icon: mdi:lan-connect
-      tap_action:
-        action: call-service
-        service: button.press
-        target:
-          entity_id: button.wake_on_lan_6c_70_cb_f0_15_b0
-      card_mod:
-        style: 'ha-card { border-radius: 18px; }
-
-          '
     - type: entities
       title: Bedroom TV
       entities:
@@ -245,9 +232,9 @@ views:
     - type: entities
       title: Bedroom TV Voice
       entities:
-      - binary_sensor.george_s_2025_samsung_smart_tv_connectivity
-      - switch.george_s_2025_samsung_smart_tv_do_not_disturb
-      - notify.george_s_2025_samsung_smart_tv_announce
-      - notify.george_s_2025_samsung_smart_tv_speak
+      - binary_sensor.samsung_smart_tv_connectivity
+      - switch.samsung_smart_tv_do_not_disturb
+      - notify.samsung_smart_tv_announce
+      - notify.samsung_smart_tv_speak
       card_mod:
         style: 'ha-card { border-radius: 18px; }'
