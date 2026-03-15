@@ -1,0 +1,102 @@
+room_mode_workspace:
+  alias: Room Mode Workspace
+  mode: single
+  sequence:
+    - action: remote.turn_on
+      target:
+        entity_id: remote.samsung_monitor_on_off
+    - action: remote.turn_off
+      target:
+        entity_id: remote.bedroom_tv
+    - action: light.turn_off
+      target:
+        entity_id: light.tv_backlight
+    - action: light.turn_on
+      target:
+        entity_id: light.hex_panel_lights
+    - action: fan.set_preset_mode
+      target:
+        entity_id: fan.air_purifier
+      data:
+        preset_mode: auto
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sun.sun
+              state: below_horizon
+          sequence:
+            - action: light.turn_on
+              target:
+                entity_id: light.ceiling_light
+              data:
+                brightness_pct: 30
+                color_temp_kelvin: 2700
+
+room_mode_lounge:
+  alias: Room Mode Lounge
+  mode: single
+  sequence:
+    - action: remote.turn_off
+      target:
+        entity_id: remote.samsung_monitor_on_off
+    - action: remote.turn_on
+      target:
+        entity_id: remote.bedroom_tv
+    - action: light.turn_on
+      target:
+        entity_id:
+          - light.tv_backlight
+          - light.hex_panel_lights
+    - action: fan.set_preset_mode
+      target:
+        entity_id: fan.air_purifier
+      data:
+        preset_mode: auto
+    - action: light.turn_on
+      target:
+        entity_id: light.ceiling_light
+      data:
+        brightness_pct: 1
+        color_temp_kelvin: 2700
+
+room_mode_sleep:
+  alias: Room Mode Sleep
+  mode: single
+  sequence:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.ceiling_light
+          - light.tv_backlight
+          - light.hex_panel_lights
+    - action: remote.turn_off
+      target:
+        entity_id:
+          - remote.bedroom_tv
+          - remote.samsung_monitor_on_off
+    - action: fan.set_preset_mode
+      target:
+        entity_id: fan.air_purifier
+      data:
+        preset_mode: sleep
+
+room_mode_away:
+  alias: Room Mode Away
+  mode: single
+  sequence:
+    - action: light.turn_off
+      target:
+        entity_id:
+          - light.ceiling_light
+          - light.tv_backlight
+          - light.hex_panel_lights
+    - action: remote.turn_off
+      target:
+        entity_id:
+          - remote.bedroom_tv
+          - remote.samsung_monitor_on_off
+    - action: fan.set_preset_mode
+      target:
+        entity_id: fan.air_purifier
+      data:
+        preset_mode: auto

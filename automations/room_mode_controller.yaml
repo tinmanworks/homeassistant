@@ -1,0 +1,35 @@
+- id: room_mode_controller
+  alias: Room Mode Controller
+  mode: single
+  trigger:
+    - platform: state
+      entity_id: input_select.room_mode
+  condition:
+    - condition: template
+      value_template: >-
+        {{ trigger.from_state is not none
+           and trigger.to_state is not none
+           and trigger.from_state.state not in ['unknown', 'unavailable']
+           and trigger.to_state.state in ['Workspace', 'Lounge', 'Sleep', 'Away'] }}
+  action:
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.state == 'Workspace' }}"
+          sequence:
+            - action: script.room_mode_workspace
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.state == 'Lounge' }}"
+          sequence:
+            - action: script.room_mode_lounge
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.state == 'Sleep' }}"
+          sequence:
+            - action: script.room_mode_sleep
+        - conditions:
+            - condition: template
+              value_template: "{{ trigger.to_state.state == 'Away' }}"
+          sequence:
+            - action: script.room_mode_away

@@ -24,7 +24,7 @@ views:
           target:
             entity_id: input_select.room_mode
           data:
-            option: WorkSpace
+            option: Workspace
         card_mod:
           style: 'ha-card { border-radius: 18px; }
 

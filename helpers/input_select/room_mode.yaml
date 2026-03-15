@@ -1,0 +1,8 @@
+room_mode:
+  name: Room Mode
+  icon: mdi:home-variant-outline
+  options:
+    - Workspace
+    - Lounge
+    - Sleep
+    - Away
