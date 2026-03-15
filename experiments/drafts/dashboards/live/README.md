@@ -7,3 +7,5 @@ Expected files:
 - `sync_live_report.md` (coverage/exclusion report)
 
 These files are traceability artifacts for dashboard catalog generation.
+
+They are local runtime outputs and are ignored by git by default.
